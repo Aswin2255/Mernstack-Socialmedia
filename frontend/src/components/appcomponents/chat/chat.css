@@ -1,0 +1,54 @@
+.chat-container{
+display: flex;
+height: 100%;
+margin: 1rem;
+}
+.chathistory{
+    width: 50%;
+    border: solid;
+    border-color: lightblue;
+}
+.showchat{
+    width: 50%;
+    border: solid;
+    border-color: lightblue;
+    position: relative;
+}
+.userchat{
+    display: flex;
+    padding: 1rem;
+    background-color: gray;
+    border: solid;
+    border-color: lightblue;
+}
+.avatar{
+    margin-right: 1.1rem;
+}
+.topbar{
+    display:  flex;
+    padding: 1rem;
+    background-color: grey;
+    justify-content: space-between;
+}
+.bottom-bar{
+    display: flex;
+    background-color: gray;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    align-items: center;
+}
+.input-box{
+    padding: 1rem;
+}
+.send{
+    display: flex;
+    justify-content: flex-end;
+    margin: .5rem;
+}
+.chatavatar{
+    display: flex;
+}
+.username{
+    margin-left: 1rem;
+}

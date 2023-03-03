@@ -1,0 +1,11 @@
+.dashboard-card{
+    margin: 1rem;
+}
+.card-container{
+    display: flex;
+    justify-content: space-around;
+}
+.user,.post{
+
+    margin: 1rem;
+}

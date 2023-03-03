@@ -1,0 +1,19 @@
+.bottom-container{
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    position: sticky;
+    bottom: 0;
+}
+.active{
+    display: flex;
+   background-color: blue;
+   padding: 1rem;
+}
+@media (max-width:770px){
+    .bottom-container{
+        display: flex;
+    }
+}

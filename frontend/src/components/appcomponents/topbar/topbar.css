@@ -1,0 +1,40 @@
+.topbar-container{
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+    background-color: blue;
+    align-items: center;
+}
+
+.middle input[type=text]{
+  width: 100%;
+  border: none;
+  padding: 6px;
+}
+.toggle-button{
+    position: absolute;
+    width: 30px;
+    height: 21px;
+    top: 1rem;
+    right: 1rem;
+    display: none;
+    justify-content: space-between;
+    flex-direction: column;
+}
+ .bar{
+    background-color: white;
+    height: 3px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+
+
+@media (max-width:770px){
+    .toggle-button{
+        display: flex;
+    }
+    .middle {
+        display: none;
+    }
+}
