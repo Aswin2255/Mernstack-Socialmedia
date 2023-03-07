@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Avatar from '../../components/appcomponents/Avatar'
+import Bottombar from '../../components/appcomponents/botombar/Bottombar'
 import Cards from '../../components/appcomponents/Cards'
 import Layout from '../../components/appcomponents/Layout'
 import Topbar from '../../components/appcomponents/topbar/Topbar'
@@ -73,6 +74,7 @@ function Setings() {
     </div>
 
         </Layout>
+        <Bottombar/>
      
     </div>
   )

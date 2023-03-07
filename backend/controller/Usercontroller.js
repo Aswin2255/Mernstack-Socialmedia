@@ -2,17 +2,45 @@
 import user from "../models/Usermodel.js";
 
 
+/* verify user email  */
+
+export const VerifyEmail = async(req,res,next)=>{
+    try {
+        const userid = req.user
+        const userfind = await user.findById(userid)
+        console.log(userfind)
+        if(userfind.otp === parseInt(req.body.otp)){
+               const verified = await user.findByIdAndUpdate(userid,{verified:true})
+               res.status(201).json({status:true,message:'user verified'})
+        }
+        else{
+            res.status(401).json({status:false,message:'invalid otp'})
+        }
+    } catch (error) {
+        
+    }
+}
+
+
 /* read */
 
+/*--------------------neede to change this function ----------------------------------*/
 export const getuser = async (req,res,next)=>{
     try {
-        const {id} = req.params
+        let id = req.user
         const userfind = await user.findById(id);
-        res.status(200).json(userfind)
+        if(userfind.verified){
+            res.status(200).json(userfind)
+        }
+        else{
+            res.status(404).json({msg:'user not verified'})
+        }
+       
     } catch (error) {
         res.status(404).json({message:error.message})      
     }
-}
+}/*------------------------------------------------------------------------------------------*/
+
 
 export const getfriends = async(req,res)=>{
     try {

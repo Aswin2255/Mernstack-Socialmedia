@@ -3,6 +3,6 @@ import  upload from '../multerconfig.js'
 import express from 'express'
 const router = express.Router()
 
-router.post('/register',upload.single('propic'),register)
+router.post('/register',register)
 router.post('/login',login)
 export default router

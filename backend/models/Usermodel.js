@@ -1,13 +1,7 @@
 import mongoose from "mongoose";
 const Userschema = new mongoose.Schema(
     {
-        firstname:{
-            type:String,
-            require:true,
-            min:2,
-            max:15,
-        },
-        lastname:{
+        name:{
             type:String,
             require:true,
             min:2,
@@ -20,7 +14,12 @@ const Userschema = new mongoose.Schema(
             max:25,
             unique:true
         },
-        password:{
+        phone:{
+            type:Number,
+            require:true,
+            unique:true
+        },
+        pass:{
             type:String,
             require:true,
             min:4,
@@ -34,8 +33,14 @@ const Userschema = new mongoose.Schema(
             type : Array,
             default : []
         },
-        location:String,
-        ocuupation:String,
+        verified:{
+            type : Boolean,
+            require:true
+        },
+        otp:{
+            type : Number,
+            default:null
+        }
       
     },
     {timestamps:true}

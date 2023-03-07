@@ -17,6 +17,7 @@ import Profile from './pages/home/Profile';
 import Post from './components/appcomponents/Post';
 import About from './pages/home/About';
 import Photos from './pages/home/Photos';
+import Verifyemail from './pages/home/Verifyemail';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
                     <Route path='/profile/post' element = {<Profile/>}></Route>
                     <Route path='/profile/about' element = {<About/>}></Route>
                     <Route path='/profile/photos' element = {<Photos/>}></Route>
+                    <Route path='/verifyemail' element = {<Verifyemail/>}></Route>
                 </Routes>
 
             </BrowserRouter>

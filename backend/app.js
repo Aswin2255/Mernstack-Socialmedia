@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
+import cookie from 'cookie-parser'
 import authrouter from './routes/authrouer.js';
 import userrouter from './routes/userroutes.js';
 import postrouter from './routes/postroutes.js';
@@ -19,6 +20,7 @@ const __dirname  = path.dirname(__filename)
 dotenv.config()
 const app = express()
 app.use(express.json());
+app.use(cookie())
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({policy:'cross-origin'}))
 app.use(morgan("common"))
