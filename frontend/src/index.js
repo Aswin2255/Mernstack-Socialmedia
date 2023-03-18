@@ -2,47 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import authreducer from './Redux/Store';
-import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux'
-import{
-    persistReducer,
-    persistStore,
-    FLUSH,
-    REHYDRATE,
-    PAUSE,
-    PERSIST,
-    PURGE,
-    REGISTER
-} from 'redux-persist'
-import storage from 'redux-persist/lib/storage';
-import { PersistGate } from 'redux-persist/integration/react';
-const persistconfig =   {key:"root",storage,version:1};
-const persistedReducer = persistReducer(persistconfig,authreducer);
-const store = configureStore({
-    reducer:persistedReducer,
-    middleware:(getDefaultMiddleware)=>
-        getDefaultMiddleware({
-            serializableCheck:{
-                ignoreActions:[ FLUSH,
-                    REHYDRATE,
-                    PAUSE,
-                    PERSIST,
-                    PURGE,
-                    REGISTER]
-            }
-        })
-    
-})
+import Store from './store/Store';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import persistStore from 'redux-persist/es/persistStore';
+
+let persistor = persistStore(Store)
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor = {persistStore(store)}>
-    <App />
+  <Provider store={Store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
     </PersistGate>
-  </Provider>
-   
- 
+  </Provider>,
 );
 

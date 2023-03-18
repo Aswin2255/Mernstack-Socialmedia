@@ -1,0 +1,15 @@
+.sidebar-container{
+    background-color: rgb(33 141 250);
+    height: 100vh;
+    width: 25%;
+    display: flex;
+    float: left;
+    position: sticky;
+    top: 30;
+
+}
+.menu-items{
+    margin: 1rem;
+    padding: 1rem;
+    width: 100%;
+}

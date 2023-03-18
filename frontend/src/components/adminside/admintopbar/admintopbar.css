@@ -1,0 +1,19 @@
+.topbar-admin{
+    background-color: rgb(33 141 250);
+    display:  flex;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.left{
+    color: white;
+    padding: 1rem;
+    font-weight: bolder;
+    margin-left: 4rem;
+    font-size: xx-large;
+}
+.admin-heading{
+    margin-left: 1rem;
+}
+
+
