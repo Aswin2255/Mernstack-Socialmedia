@@ -25,6 +25,13 @@ const postschema = mongoose.Schema(
     comments: {
       type: Array,
     },
+    taggeduser: {
+      type: Array,
+    },
+    deleteflag: {
+      type: Boolean,
+      default: false,
+    },
     report: {
       type: Array,
     },

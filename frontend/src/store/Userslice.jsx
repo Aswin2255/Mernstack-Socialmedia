@@ -5,6 +5,8 @@ const Userslice = createSlice({
     initialState:{userdetails:[],alluser:[],loading:false},
     reducers:{
         Getuser(state,action){
+            console.log('jjjjjjjjjjjjj')
+            console.log(action.payload)
             state.userdetails = action.payload
         },
         Getalluser(state,action){

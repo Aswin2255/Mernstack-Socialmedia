@@ -1,9 +1,12 @@
 import React from "react";
 
-function Avatar({ size }) {
+function Avatar({ size , pc }) {
   let width = "w-12";
   if (size === "big") {
     width = "w-36";
+  }
+  if (pc){
+    width = 0
   }
   return (
     <div>

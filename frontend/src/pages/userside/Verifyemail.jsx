@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import axios from '../../Axios';
@@ -13,6 +13,13 @@ function Verifyemail() {
   const [otp, setotp] = useState('');
   const Navigate = useNavigate();
   const dispatch = useDispatch();
+  const isverified = useSelector((state)=>state.auth.userdetails)
+  useEffect(()=>{
+    if(isverified.verified){
+      Navigate('/')
+    }
+
+  },[])
 
   const handelsubmit = async (e) => {
     if (otp) {

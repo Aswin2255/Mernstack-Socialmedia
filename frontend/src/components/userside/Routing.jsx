@@ -40,7 +40,7 @@ function Routing() {
             <Route path="/profile/post/:id" element={<Profile />}></Route>
             <Route path="/profile/about/:id" element={<About />}></Route>
             <Route path="/profile/photos/:id" element={<Photos />}></Route>
-            <Route path="/verifyemail" element={<Verifyemail />}></Route>
+            <Route path="/verifyemail" element={  <Verifyemail />}></Route>
             <Route path="/ismobile" element={<Mobchat />}></Route>
             <Route path="/chat" element={<Chat />}></Route>
             <Route path="/profile/friends/:id" element={<Friends />}></Route>

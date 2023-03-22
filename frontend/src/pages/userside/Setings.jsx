@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
+import axios from '../../Axios';
 import Avatar from '../../components/userside/Avatar';
 import Bottombar from '../../components/userside/botombar/Bottombar';
 import Cards from '../../components/userside/Cards';
@@ -8,8 +9,11 @@ import Layout from '../../components/userside/Layout';
 import Topbar from '../../components/userside/topbar/Topbar';
 
 function Setings() {
-  // validate whether the loged in user is accesing the page
-  // bring the userdetails from the backend
+  useEffect(()=>{
+    const fetchUsersetails = async ()=>{
+      const {data} = await axios.get('/user/getuserdetails',{withCredentials:true})
+    }
+  })
 
   return (
     <div>

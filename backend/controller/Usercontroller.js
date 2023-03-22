@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Post from "../models/Postmodel.js";
 import user from "../models/Usermodel.js";
 
@@ -16,33 +17,32 @@ export const VerifyEmail = async (req, res, next) => {
       );
       console.log(verified);
       (verified.pass = undefined), (verified.otp = undefined);
-      res
-        .status(201)
-        .json({
-          status: true,
-          message: "user verified",
-          userdetails: verified,
-        });
+      res.status(201).json({
+        status: true,
+        message: "user verified",
+        userdetails: verified,
+      });
     } else {
       res.status(401).json({ status: false, message: "invalid otp" });
     }
   } catch (error) {}
 };
 
+/* get a user by id */
+
 export const getuser = async (req, res, next) => {
   try {
     console.log("hi");
     let id = req.params.id;
-    const userfind = await user.findById(id);
+    const userfind = await user.find({ _id: id });
+
     console.log(userfind);
-    if (userfind.verified) {
-      res
-        .status(200)
-        .json({
-          status: true,
-          userdetails: userfind,
-          msg: "user find succesfully",
-        });
+    if (userfind[0].verified) {
+      res.status(200).json({
+        status: true,
+        userdetails: userfind,
+        msg: "user find succesfully",
+      });
     } else {
       res.json({ status: false, msg: "user not verified" });
     }
@@ -51,20 +51,49 @@ export const getuser = async (req, res, next) => {
   }
 };
 
-export const getfriends = async (req, res) => {
+/* to get the followers list of a user */
+
+export const getfollowers = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id + "jjj");
     const userfind = await user.findById(id);
-    // const friends = await userfind.friends.map((id)=>user.findById(id))
-    const friends = await Promise.all(userfind.map((id) => user.findById(id)));
-    const formatedfriends = friends.map(
-      ({ _id, firstname, lastname, occupation, location, picturepath }) => {
-        return { _id, firstname, lastname, occupation, location, picturepath };
-      }
-    );
-    res.json(200).json(formatedfriends);
+    // console.log(userfind.followers)
+    let folowerslist = [];
+    for (const id of userfind.followers) {
+      const followers = await user.findById(id[0]);
+      (followers.otp = undefined), (followers.pass = undefined);
+      folowerslist.push(followers);
+    }
+    res.status(200).json({
+      status: true,
+      followers: folowerslist,
+      msg: "succesfully fetched followers",
+    });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.stattus(400).json({ status: false, msg: "error occured" });
+  }
+};
+
+/* to get the following  list of a user */
+
+export const getfollowing = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const usefind = await user.findById(id);
+    let followinglist = [];
+    for (const id of usefind.following) {
+      const following = await user.findById(id[0]);
+      (following.otp = undefined), (following.pass = undefined);
+      followinglist.push(following);
+    }
+    res.status(200).json({
+      status: true,
+      followers: followinglist,
+      msg: "succesfully fetched following users",
+    });
+  } catch (error) {
+    res.stattus(400).json({ status: false, msg: "error occured" });
   }
 };
 
@@ -72,25 +101,65 @@ export const getfriends = async (req, res) => {
 
 export const addremovefriend = async (req, res) => {
   try {
-    const { id, friendid } = req.params;
-    const user = await user.findById(id);
-    const friend = await user.findById(friendid);
-    if (user.friends.includes(friendid)) {
-      user.friends = user.friends.filter((id) => id !== friendid);
-      friend.friends = friend.friends.filter((id) => id !== id);
+    console.log("hi");
+    const { id } = req.params;
+    const userid = req.user;
+    const friend = await user.findById(id);
+    const userlogedin = await user.findById(userid);
+    const isfollow =
+      friend.followers.get(userid) || userlogedin.following.get(id);
+    if (isfollow) {
+      friend.followers.delete(userid);
+      userlogedin.following.delete(id);
     } else {
-      user.friends.push(friendid);
-      friend.friends.push(id);
+      friend.followers.set(userid, true);
+      userlogedin.following.set(id, true);
     }
-    await user.save();
-    await friend.save();
-    const formatedfriends = friends.map(
-      ({ _id, firstname, lastname, occupation, location, picturepath }) => {
-        return { _id, firstname, lastname, occupation, location, picturepath };
+    const updateuser = await user.findByIdAndUpdate(
+      userid,
+      {
+        following: userlogedin.following,
+      },
+      {
+        new: true,
       }
     );
-    res.status(200).json(formatedfriends);
+    const updatfriend = await user.findByIdAndUpdate(
+      id,
+      {
+        followers: friend.followers,
+      },
+      {
+        new: true,
+      }
+    );
+    console.log("--------------------------------------------------------");
+    console.log(updatfriend);
+    console.log("==========================================================");
+    console.log(updateuser);
+
+    res.status(200).json({
+      status: true,
+      updateuser: [updatfriend],
+      msg: "add/remove friends",
+    });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    console.log(error.message);
+    res.status(404).json({ stattus: false, msg: error.message });
   }
 };
+
+/* to get list of all users in database */
+
+export const getallUser = async (req, res) => {
+  try {
+    const Allusers = await user.find();
+    res
+      .status(200)
+      .json({ status: true, allusers: Allusers, msg: "fetched all users" });
+  } catch (error) {
+    res.status(404).json({ status: false, msg: "unexpected error happend" });
+  }
+};
+
+/* to get the login user */
