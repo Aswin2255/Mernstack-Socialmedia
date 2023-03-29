@@ -31,7 +31,7 @@ function Topbar() {
         });
         setfetcheduser(data.allusers);
       } catch (error) {
-        alert(error.message);
+       // alert(error.message);
         dispatch(AuthActions.UserLogout());
       }
     };
@@ -160,16 +160,7 @@ function Topbar() {
         {ismobile && toggle && (
           <div className="nav-links">
             <Cards>
-              <div
-                className="friends"
-                style={{
-                  display: 'flex',
-                  margin: '1rem',
-                  alignItems: 'center',
-                  backgroundColor:
-                    location.pathname === '/profile/friends' ? 'blue' : '',
-                }}
-              ></div>
+             {/* 
               <div
                 className="alert"
                 style={{
@@ -209,6 +200,7 @@ function Topbar() {
                   <p>Alert</p>
                 </div>
               </div>
+                  */}
               <div
                 className="logout"
                 onClick={logout}

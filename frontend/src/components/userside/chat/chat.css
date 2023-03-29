@@ -34,7 +34,7 @@
   display: flex;
 
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   width: 100%;
   align-items: center;
 }
@@ -58,7 +58,7 @@
   }
   .chathistory {
     width: 100%;
-    margin-bottom: 2rem;
+   
   }
   .showchat {
     width: 100%;

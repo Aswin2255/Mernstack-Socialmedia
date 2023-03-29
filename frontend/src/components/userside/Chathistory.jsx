@@ -24,7 +24,7 @@ function Chathistory({conversation,currentuser}) {
     
    <>
    {
-    user.length ?  <div className="userchat" >
+    user.length ?  <div className="userchat cursor-pointer hover:bg-gray-300" >
     <div className="avatar">
       <Avatar img={user[0].propicpath}  />
     </div>

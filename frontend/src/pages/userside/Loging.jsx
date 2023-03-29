@@ -88,7 +88,7 @@ function Loging() {
   return (
     <>
       <Topbar />
-      <div className="h-screen flex items-center">
+      <div className="h-screen flex items-center ">
         <div className="max-w-md mx-auto grow ">
           <div className="flex">
             <img

@@ -13,6 +13,7 @@ import Topbar from '../topbar/Topbar';
 import './chat.css';
 import Chatsearch from './Chatsearch';
 import Chattopbar from './Chattopbar';
+import ScrollToBottom from 'react-scroll-to-bottom';
 function Chat() {
   const [message, setmessage] = useState('');
   const [sendmessage, setsendmessage] = useState(['']);
@@ -25,7 +26,7 @@ function Chat() {
   const [chatmessage, setchatmessage] = useState([]);
   const logedinuserid = useSelector((state) => state.auth.userdetails._id);
   const [arrivalmsg, setarrivalmsg] = useState();
-  const scrollref = useRef();
+  const scrollref = useRef(null);
   const socketconect = useRef();
   useEffect(() => {
     socketconect.current = io('ws://localhost:3001');
@@ -77,9 +78,6 @@ function Chat() {
     };
     getmessages();
   }, [currentchat]);
-  useEffect(() => {
-    scrollref.current?.scrollIntoView();
-  }, [chatmessage, arrivalmsg]);
 
   useEffect(() => {
     socketconect.current.emit('adduser', logedinuserid);
@@ -130,7 +128,9 @@ function Chat() {
 
       setmessage('');
       setchatmessage([...chatmessage, data.newmessage]);
-    } catch (error) {}
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handelchange = (e) => {
@@ -173,9 +173,10 @@ function Chat() {
                     currentuser={logedinuserid}
                   />
                 </div>
-                <div
-                  className="flex flex-col overflow-auto chatdisplay"
+
+                <ScrollToBottom
                   ref={scrollref}
+                  className="flex flex-col overflow-y-auto chatdisplay"
                 >
                   {chatmessage?.map((e) => (
                     <Messages
@@ -184,7 +185,8 @@ function Chat() {
                       setmessage={setchatmessage}
                     />
                   ))}
-                </div>
+                </ScrollToBottom>
+
                 <div className="bottom-bar">
                   <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
                     <div></div>
