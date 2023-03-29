@@ -70,7 +70,7 @@ export const createpost = async (req, res) => {
 export const getpost = async (req, res) => {
   try {
     const allpost = await Post.find();
-    const newupdatedpost = allpost.filter((e) => e.deleteflag !== true );
+    const newupdatedpost = allpost.filter((e) => e.deleteflag !== true);
 
     res.status(201).json({
       status: true,
@@ -228,12 +228,17 @@ export const Updatepost = async (req, res) => {
 export const deletepost = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletepost = await Post.findOneAndUpdate({_id:id},{$set:{
-      deleteflag : true,
-      report:[]
-    }})
-   
-    console.log(deletepost)
+    const deletepost = await Post.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          deleteflag: true,
+          report: [],
+        },
+      }
+    );
+
+    console.log(deletepost);
     const updatedpost = await Post.find();
     const newupdatedpost = updatedpost.filter((e) => e.deleteflag !== true);
     console.log(
@@ -311,9 +316,10 @@ export const savepost = async (req, res, next) => {
     );
     console.log(updatepost);
     const allpost = await Post.find();
+    const updatedpost = allpost.filter((e) => e.deleteflag !== true);
     res.status(200).json({
       status: true,
-      updatedpost: allpost,
+      updatedpost: updatedpost,
       message: "saved post updated",
     });
   } catch (error) {

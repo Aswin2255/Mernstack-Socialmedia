@@ -1,27 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import axios from '../../../Axios';
 import { AuthActions } from '../../../store/Authslice';
 import Avatar from '../Avatar';
 import Cards from '../Cards';
 import './topbar.css';
 
 function Topbar() {
+  const dispatch = useDispatch();
   const ismobile = useMediaQuery({ query: '(max-width:770px)' });
   const [cookies, setcookie, removeCookie] = useCookies();
+  const [searchvalues, setsearchvalues] = useState('');
+  const [fetcheduser, setfetcheduser] = useState([]);
   const [toggle, settoggle] = useState(false);
   let location = useLocation();
+  const [searchresult, setsearchresult] = useState([]);
   const Navigate = useNavigate();
   const Dispatch = useDispatch();
   const activeclase = 'active';
   const nonactiveclase = 'noactive';
   const logedinuser = useSelector((state) => state.auth.userdetails);
+  useEffect(() => {
+    const fetchallusers = async () => {
+      try {
+        const { data } = await axios.get('/user/alluser', {
+          withCredentials: true,
+        });
+        setfetcheduser(data.allusers);
+      } catch (error) {
+        alert(error.message);
+        dispatch(AuthActions.UserLogout());
+      }
+    };
+    fetchallusers();
+  }, []);
   const logout = () => {
     removeCookie('jwt');
     Dispatch(AuthActions.UserLogout());
     Navigate('/login');
+  };
+
+  const handelchange = async (e) => {
+    try {
+      setsearchvalues(e.target.value);
+      if (e.target.value !== '') {
+        const result = fetcheduser.filter(
+          (event) =>
+            event.name.includes(e.target.value) && event._id !== logedinuser._id
+        );
+
+        setsearchresult(result);
+      } else {
+        setsearchresult([]);
+      }
+    } catch (error) {
+      dispatch(AuthActions.UserLogout());
+      alert('unexpected error ocured');
+    }
   };
 
   return (
@@ -57,11 +95,40 @@ function Topbar() {
                 </div>
 
                 <input
+                  value={searchvalues}
+                  onChange={(e) => handelchange(e)}
                   className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
                   type="text"
                   id="search"
                   placeholder="Search something.."
                 />
+              </div>
+              <div
+                className="results fixed "
+                style={{ width: '34%', marginLeft: '-2rem' }}
+              >
+                {searchresult ? (
+                  <>
+                    {searchresult.map((e) => {
+                      return (
+                        <div>
+                          <Link to={`/profile/${e._id}`}>
+                            <div className="bg-white border border-gray-100 w-full mt-2 p-4 flex items-center hover:bg-gray-300 cursor-pointer">
+                              <div className="avatar">
+                                <Avatar img={e.propicpath} />
+                              </div>
+                              <div className="username">
+                                <h3>{e.name}</h3>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
 

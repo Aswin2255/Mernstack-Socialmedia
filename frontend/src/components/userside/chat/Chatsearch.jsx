@@ -40,7 +40,7 @@ function Chatsearch({ currentchat }) {
   };
   const handelclick = async (users) => {
     try {
-      const { data } = await axios.get(`chat/getchat/${users._id}`);
+      const { data } = await axios.get(`chat/getchat/${users._id}`,{withCredentials:true});
       currentchat(...data.chat);
       setsearch('');
       setsearchresult('')
