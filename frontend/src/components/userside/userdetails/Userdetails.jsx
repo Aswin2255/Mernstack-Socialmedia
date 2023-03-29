@@ -80,7 +80,7 @@ function Userdetails() {
           <div className="w-full rounded-xl p-12 shadow-2xl shadow-blue-200  bg-white">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
               <div className="grid-cols-1 lg:col-span-3">
-                <Avatar pc={true} />
+                <Avatar pc={true} img = {User[0].propicpath} />
               </div>
 
               <div className="col-span-1 lg:col-span-9">

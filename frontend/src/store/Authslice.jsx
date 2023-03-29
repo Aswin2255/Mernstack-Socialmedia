@@ -12,6 +12,10 @@ const Authslice = createSlice({
       state.Userisloggedin = true;
       state.userdetails = action.payload;
     },
+    Userupdate(state,action){
+      state.Userisloggedin = true;
+      state.userdetails = action.payload;
+    },
     UserLogout(state) {
       state.Userisloggedin = false;
       state.userdetails = [];

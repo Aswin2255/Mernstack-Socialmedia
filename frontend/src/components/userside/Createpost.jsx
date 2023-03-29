@@ -20,7 +20,7 @@ function Createpost() {
   const [image, setimage] = useState('');
   const [caption, setcaption] = useState('');
   const [loading, setloading] = useState(false);
-  const logedinuser = useSelector((state) => state.auth.userdetails._id);
+  const logedinuser = useSelector((state) => state.auth.userdetails);
   const [viewimage, setviewimage] = useState('');
   const [tagmodal, settagmodal] = useState(false);
   const [tagdata,settagdata] = useState(false)
@@ -113,8 +113,8 @@ function Createpost() {
         <Cards>
           <div className="flex gap-3 items-center">
             <div>
-              <Link to={`/profile/${logedinuser}`}>
-                <Avatar />
+              <Link to={`/profile/${logedinuser._id}`}>
+                <Avatar img = {logedinuser.propicpath}/>
               </Link>
             </div>
 

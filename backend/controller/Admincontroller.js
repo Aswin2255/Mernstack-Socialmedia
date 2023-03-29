@@ -94,3 +94,42 @@ export const changeStatus = async (req, res) => {
     res.status(400).json({ status: false, msg: "unexpected error ocured" });
   }
 };
+export const getReportedpost = async (req, res) => {
+  try {
+    const allpost = await Post.find();
+
+    const reportedpost = allpost.filter((e) => e.report.length);
+    res.status(200).json({
+      status: true,
+      reported: reportedpost,
+      msg: "succesfully fetched reported post",
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, msg: error.message });
+  }
+};
+export const restrictpost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const deletpost = await Post.findByIdAndUpdate(
+      id,
+      {
+        deleteflag: !req.body.value,
+      },
+      {
+        new: true,
+      }
+    );
+    const updatedpost = await Post.find();
+    const reportedpost = updatedpost.filter((e) => e.report.length);
+
+    res.status(200).json({
+      status: true,
+      reportedpost: reportedpost,
+      msg: "post restricted",
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, msg: error.message });
+  }
+};

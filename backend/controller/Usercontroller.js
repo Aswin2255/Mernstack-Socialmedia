@@ -8,14 +8,14 @@ export const VerifyEmail = async (req, res, next) => {
   try {
     const userid = req.user;
     const userfind = await user.findById(userid);
-    console.log(userfind);
+  //  console.log(userfind);
     if (userfind.otp === parseInt(req.body.otp)) {
       const verified = await user.findByIdAndUpdate(
         userid,
         { verified: true },
         { new: true }
       );
-      console.log(verified);
+    //  console.log(verified);
       (verified.pass = undefined), (verified.otp = undefined);
       res.status(201).json({
         status: true,
@@ -36,7 +36,7 @@ export const getuser = async (req, res, next) => {
     let id = req.params.id;
     const userfind = await user.find({ _id: id });
 
-    console.log(userfind);
+   // console.log(userfind);
     if (userfind[0].verified) {
       res.status(200).json({
         status: true,
@@ -56,7 +56,7 @@ export const getuser = async (req, res, next) => {
 export const getfollowers = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id + "jjj");
+  //  console.log(id + "jjj");
     const userfind = await user.findById(id);
     // console.log(userfind.followers)
     let folowerslist = [];
@@ -133,10 +133,10 @@ export const addremovefriend = async (req, res) => {
         new: true,
       }
     );
-    console.log("--------------------------------------------------------");
+   /* console.log("--------------------------------------------------------");
     console.log(updatfriend);
     console.log("==========================================================");
-    console.log(updateuser);
+    console.log(updateuser);*/
 
     res.status(200).json({
       status: true,
@@ -163,3 +163,115 @@ export const getallUser = async (req, res) => {
 };
 
 /* to get the login user */
+
+export const getLoginuser = async (req, res) => {
+  try {
+    const userid = req.user;
+    const userfind = await user.findById(userid);
+    console.log(userfind);
+    res.status(200).json({
+      status: true,
+      logedinuser: userfind,
+      msg: "user fetched sucessfully",
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(404).json({ status: false, msg: "unexpected error happend" });
+  }
+};
+
+/* to update user */
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let { username, email, phone } = req.body;
+    phone = parseInt(phone);
+    const updateduser = await user.findByIdAndUpdate(
+      id,
+      {
+        name: username,
+        email: email,
+        phone: phone,
+      },
+      {
+        new: true,
+      }
+    );
+    console.log(".............................................");
+    await Post.updateMany(
+      { userid: id },
+      {
+        $set: {
+          name: username,
+        },
+      }
+    );
+    await Post.updateMany(
+      { "comments.userid": id },
+      {
+        $set: {
+          "comments.$.username": username,
+        },
+      }
+    );
+    
+
+    await Post.updateMany(
+      { "taggeduser._id": mongoose.Types.ObjectId(id) },
+      {
+        $set: {
+          "taggeduser.$.name": username,
+        },
+      }
+    );
+
+    console.log([updateduser]);
+    res
+      .status(200)
+      .json({ status: true, updateduser: updateduser, msg: "user updated" });
+  } catch (error) {
+    res.status(404).json({ status: false, msg: "unexpected error happend" });
+    console.log(error);
+  }
+};
+
+/* to update profile pic */
+
+export const ChangeProfile = async (req, res) => {
+  try {
+    const filepath = req.file.filename;
+    const userid = req.user;
+    const updateduser = await user.findByIdAndUpdate(
+      userid,
+      {
+        propicpath: filepath,
+      },
+      {
+        new: true,
+      }
+    );
+    await Post.updateMany({userid:userid},{$set:{
+      userpicturepath : filepath
+    }})
+    await Post.updateMany(
+      { "comments.userid": userid },
+      {
+        $set: {
+          "comments.$.propicpath": filepath,
+        },
+      }
+    );
+    console.log(updateduser);
+    res
+      .status(200)
+      .json({
+        status: true,
+        updateduser: updateduser,
+        msg: "profile pic updated",
+      });
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ status: false, msg: error.message });
+  }
+};

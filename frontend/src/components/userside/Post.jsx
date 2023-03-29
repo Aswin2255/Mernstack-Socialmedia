@@ -29,6 +29,8 @@ function Post({ profile, saved }) {
   //to get the id of logged in user
   const userid = useSelector((state) => state.auth.userdetails._id);
   const Username = useSelector((state) => state.auth.userdetails.name);
+  const propicpath = useSelector((state) => state.auth.userdetails.propicpath);
+  console.log(propicpath)
   // this will fetch all post from the postslice
   const Postdata = useSelector((state) => state.post.allpost);
   // this will fetch userpost if any if we are on users time line
@@ -50,11 +52,17 @@ function Post({ profile, saved }) {
       console.log(postid);
       setreportmodal(true);
       setreportid(postid);
+      dis({
+        type: 'dropdown',
+        field: null,
+        value: null,
+      });
     } catch (error) {}
   };
 
   const savepost = async (postid) => {
     try {
+      console.log('clicked')
       const { data } = await axios.patch(`/post/savepost/${postid}`, {
         withCredentials: true,
       });
@@ -141,6 +149,7 @@ function Post({ profile, saved }) {
         });
         console.log(data);
         if (data.status) {
+          console.log(data.post)
           dispatch(postaction.Getallpost(data.post));
           setloading(false);
         } else {
@@ -215,11 +224,13 @@ function Post({ profile, saved }) {
       value: value,
     });
   };
-  const postcomment = async (newcoment, id, username) => {
+  const postcomment = async (newcoment, id, username,propicpath) => {
+    console.log('helowww')
+    console.log(propicpath)
     console.log(id);
     const { data } = await axios.patch(
       `post/comment/${id}`,
-      { newcoment, username },
+      { newcoment, username ,propicpath},
       { withCredentials: true }
     );
     if (profile) {
@@ -256,13 +267,13 @@ function Post({ profile, saved }) {
       const Content = loading ? (
         <Loader />
       ) : (
-        Userpost.map((e) => {
+        Userpost.slice(0).reverse().map((e) => {
           return (
             <Cards key={e._id}>
               <div className="flex gap-3">
                 <div>
                   <Link to={'/profile'}>
-                    <Avatar />
+                    <Avatar img = {e.userpicturepath}/>
                   </Link>
                 </div>
                 <div className="grow">
@@ -531,14 +542,14 @@ function Post({ profile, saved }) {
                 <>
                   <div className="flex mt-4 gap-3 ">
                     <div>
-                      <Avatar />
+                      <Avatar img = {propicpath} />
                     </div>
                     <div className="border grow rounded-full relative  ">
                       <form
                         onSubmit={(event) => {
                           event.preventDefault();
                           if (event.target[0].value) {
-                            postcomment(event.target[0].value, e._id, Username);
+                            postcomment(event.target[0].value, e._id, Username,propicpath);
                           }
                         }}
                       >
@@ -579,7 +590,7 @@ function Post({ profile, saved }) {
                                 <div className="flex-col  w-full py-4  mt-3 bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm ">
                                   <div className="flex flex-row md-10 w-full">
                                     <Link to={`/profile/${data.userid}`}>
-                                      <Avatar />
+                                      <Avatar img = {data.propicpath} />
                                     </Link>
                                     <div className="flex-col mt-1">
                                       <div className="flex items-center flex-1 px-4 font-bold leading-tight">
@@ -671,7 +682,7 @@ function Post({ profile, saved }) {
                   <div className="flex gap-3">
                     <div>
                       <Link to={`/profile/${e.userid}`}>
-                        <Avatar />
+                        <Avatar img = {e.userpicturepath}/>
                       </Link>
                     </div>
                     <div className="grow">
@@ -941,7 +952,7 @@ function Post({ profile, saved }) {
                     <>
                       <div className="flex mt-4 gap-3 ">
                         <div>
-                          <Avatar />
+                          <Avatar img={propicpath} />
                         </div>
                         <div className="border grow rounded-full relative  ">
                           <form
@@ -951,7 +962,7 @@ function Post({ profile, saved }) {
                                 postcomment(
                                   event.target[0].value,
                                   e._id,
-                                  Username
+                                  Username,propicpath
                                 );
                               }
                             }}
@@ -993,7 +1004,7 @@ function Post({ profile, saved }) {
                                     <div className="flex-col  w-full py-4  mt-3 bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm ">
                                       <div className="flex flex-row md-10 w-full">
                                         <Link to={`/profile/${data.userid}`}>
-                                          <Avatar />
+                                          <Avatar img={data.propicpath} />
                                         </Link>
                                         <div className="flex-col mt-1">
                                           <div className="flex items-center flex-1 px-4 font-bold leading-tight">
@@ -1082,13 +1093,13 @@ function Post({ profile, saved }) {
       const Content = loading ? (
         <Loader />
       ) : (
-        Postdata.map((e) => {
+        Postdata.slice(0).reverse(0).map((e) => {
           return (
             <Cards key={e._id}>
               <div className="flex gap-3">
                 <div>
                   <Link to={`/profile/${e.userid}`}>
-                    <Avatar />
+                    <Avatar  img = {e.userpicturepath} />
                   </Link>
                 </div>
                 <div className="grow">
@@ -1355,14 +1366,14 @@ function Post({ profile, saved }) {
                 <>
                   <div className="flex mt-4 gap-3 ">
                     <div>
-                      <Avatar />
+                      <Avatar img={propicpath} />
                     </div>
                     <div className="border grow rounded-full relative  ">
                       <form
                         onSubmit={(event) => {
                           event.preventDefault();
                           if (event.target[0].value) {
-                            postcomment(event.target[0].value, e._id, Username);
+                            postcomment(event.target[0].value, e._id, Username,propicpath);
                           }
                         }}
                       >
@@ -1403,7 +1414,7 @@ function Post({ profile, saved }) {
                                 <div className="flex-col  w-full py-4  mt-3 bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm ">
                                   <div className="flex flex-row md-10 w-full">
                                     <Link to={`/profile/${data.userid}`}>
-                                      <Avatar />
+                                      <Avatar img={data.propicpath} />
                                     </Link>
                                     <div className="flex-col mt-1">
                                       <div className="flex items-center flex-1 px-4 font-bold leading-tight">

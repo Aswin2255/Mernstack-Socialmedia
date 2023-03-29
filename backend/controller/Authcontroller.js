@@ -103,6 +103,7 @@ export const login = async (req, res, next) => {
       console.log(Userfind);
     res.json({ status: true, userdetails: Userfind, msg: "user logged in" });
   } catch (err) {
-    res.status(500).json({ status: false, msg: "unexpected error occured" });
+    
+    res.status(500).json({ status: false, msg: err.message });
   }
 };

@@ -64,7 +64,7 @@ function Usertable() {
                     status
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    change status
+                    Active
                   </th>
                 </tr>
               </thead>

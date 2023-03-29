@@ -1,19 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from '../../Axios'
 import Avatar from './Avatar'
 
 
-function Chathistory() {
+function Chathistory({conversation,currentuser}) {
+  const [user,setuser] = useState([])
+  useEffect(()=>{
+    const friendid = conversation.members.find((e)=>e!==currentuser)
+    const getuser = async() =>{
+      try {
+        const {data} = await axios.get(`/user/getuser/${friendid}`)
+        setuser(data.userdetails)
+        
+      } catch (error) {
+        console.log(error)
+        
+      }
+    }
+    getuser()
+
+  },[currentuser,conversation])
   return (
-    <div>
-        <div className='flex gap-2 mb-4'>
-            <Avatar />
-            <div>
-                <h3 className='font-bold text-xl'>User</h3>
-                <span className='text-sm '>Active 5m ago</span>
-            </div>
-           
-        </div>
+    
+   <>
+   {
+    user.length ?  <div className="userchat" >
+    <div className="avatar">
+      <Avatar img={user[0].propicpath}  />
     </div>
+    <div className="content">
+      <h1>{user[0].name}</h1>
+
+    </div>
+  </div> : ''
+   }
+   </>
+    
   )
 }
 

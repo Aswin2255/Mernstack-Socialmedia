@@ -51,12 +51,15 @@ function Signup() {
       payload: !emailValid,
     });
     let usernamevalid = formstate.name.match(/^[a-zA-Z\-]+$/); //eslint-disable-line
+
+    console.log(usernamevalid);
     dispatch({
       type: 'handelinput',
       field: 'nameer',
       payload: !usernamevalid,
     });
     let phonevalid = formstate.phone.match(/^[789]\d{9}$/);
+    console.log(phonevalid)
     dispatch({
       type: 'handelinput',
       field: 'phoneer',

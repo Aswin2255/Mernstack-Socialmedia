@@ -8,9 +8,9 @@ export const createpost = async (req, res) => {
   try {
     let tagedusers = [];
     console.log(".....................................................");
-    console.log(req.body.tage)
-    if (req.body.tage !== 'undefined') {
-      console.log('entered')
+    console.log(req.body.tage);
+    if (req.body.tage !== "undefined") {
+      console.log("entered");
       const taguserid = req.body.tage.split(",");
 
       for (const i of taguserid) {
@@ -21,6 +21,8 @@ export const createpost = async (req, res) => {
     console.log(tagedusers);
 
     let userid = req.user;
+    const userdetails = await user.findById(userid);
+    const userprofilepic = userdetails.propicpath;
     let picturepath;
     let description;
     console.log("recahed........");
@@ -47,11 +49,12 @@ export const createpost = async (req, res) => {
       picturepath: picturepath,
       description: description,
       taggeduser: tagedusers,
+      userprofilepic: userprofilepic,
     });
     console.log(newpost);
     await newpost.save();
     const updatedpost = await Post.find();
-    const newupdatedpost = updatedpost.filter((e)=>e.deleteflag !== true)
+    const newupdatedpost = updatedpost.filter((e) => e.deleteflag !== true);
     res
       .status(201)
       .json({ status: true, post: newupdatedpost, message: "post created" });
@@ -67,13 +70,15 @@ export const createpost = async (req, res) => {
 export const getpost = async (req, res) => {
   try {
     const allpost = await Post.find();
-    const newupdatedpost = allpost.filter((e)=>e.deleteflag !== true)
+    const newupdatedpost = allpost.filter((e) => e.deleteflag !== true );
+
     res.status(201).json({
       status: true,
       post: newupdatedpost,
       message: "succesfully fetched all post",
     });
   } catch (error) {
+    console.log(error.message);
     res
       .status(409)
       .json({ status: false, message: "unexpected error occured" });
@@ -86,7 +91,7 @@ export const getuserpost = async (req, res) => {
     const { id } = req.params;
     console.log(id);
     const postfind = await Post.find({ userid: id });
-    const newupdatedpost = postfind.filter((e)=>e.deleteflag !== true)
+    const newupdatedpost = postfind.filter((e) => e.deleteflag !== true);
     res.status(201).json({ status: true, userpost: newupdatedpost });
   } catch (error) {
     console.log(error.message);
@@ -119,10 +124,12 @@ export const likepost = async (req, res) => {
       { new: true }
     );
     const allpost = await Post.find();
-    const newupdatedpost = allpost.filter((e)=>e.deleteflag !== true)
-    res
-      .status(200)
-      .json({ status: true, updatedpost: newupdatedpost, message: "like is updated" });
+    const newupdatedpost = allpost.filter((e) => e.deleteflag !== true);
+    res.status(200).json({
+      status: true,
+      updatedpost: newupdatedpost,
+      message: "like is updated",
+    });
   } catch (error) {
     console.log(error.message);
     res.status(409).json({ status: false, message: error.message });
@@ -131,8 +138,7 @@ export const likepost = async (req, res) => {
 
 export const CommentPost = async (req, res) => {
   try {
-    const { newcoment, username } = req.body;
-    console.log(newcoment, username);
+    const { newcoment, username, propicpath } = req.body;
 
     const { id } = req.params;
     console.log(id);
@@ -141,6 +147,7 @@ export const CommentPost = async (req, res) => {
       userid: req.user,
       comment: newcoment,
       username: username,
+      propicpath: propicpath,
     };
     console.log(updatecoment);
 
@@ -154,7 +161,7 @@ export const CommentPost = async (req, res) => {
       }
     );
     const Allpost = await Post.find();
-    const newupdatedpost = Allpost.filter((e)=>e.deleteflag !== true)
+    const newupdatedpost = Allpost.filter((e) => e.deleteflag !== true);
     res.json({ status: true, updatedpost: newupdatedpost });
   } catch (error) {
     console.log(error);
@@ -206,10 +213,12 @@ export const Updatepost = async (req, res) => {
     console.log("....................................");
     console.log(updatepost);
     const allpost = await Post.find();
-    const newupdatedpost = allpost.filter((e)=>e.deleteflag !== true)
-    res
-      .status(201)
-      .json({ status: true, message: "post updated", updatedpost: newupdatedpost });
+    const newupdatedpost = allpost.filter((e) => e.deleteflag !== true);
+    res.status(201).json({
+      status: true,
+      message: "post updated",
+      updatedpost: newupdatedpost,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({ status: false, message: error.message });
@@ -219,16 +228,18 @@ export const Updatepost = async (req, res) => {
 export const deletepost = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletpost = await Post.findByIdAndUpdate(id,{
-      deleteflag:true
-    },{
-      new:true
-    });
-    console.log(deletpost);
+    const deletepost = await Post.findOneAndUpdate({_id:id},{$set:{
+      deleteflag : true,
+      report:[]
+    }})
+   
+    console.log(deletepost)
     const updatedpost = await Post.find();
-    const newupdatedpost = updatedpost.filter((e)=>e.deleteflag !== true)
-    console.log('------------====================================================000000000000000000000--------------')
-    console.log(newupdatedpost)
+    const newupdatedpost = updatedpost.filter((e) => e.deleteflag !== true);
+    console.log(
+      "------------====================================================000000000000000000000--------------"
+    );
+    console.log(newupdatedpost);
     res.status(200).json({
       status: true,
       updatedpost: newupdatedpost,

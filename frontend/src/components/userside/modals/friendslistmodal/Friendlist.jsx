@@ -87,7 +87,7 @@ function Friendlist({ show, close, userid }) {
                       <div className="flex justify-between">
                         <>
                           <div className="m-3">
-                            <Avatar />
+                            <Avatar img={e.propicpath} />
                             </div>
                             <div className='m-3'>
                             <Link onClick={()=>close(false)}

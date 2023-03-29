@@ -8,10 +8,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import cookie from "cookie-parser";
+import http from "http";
+import { Server, Socket } from "socket.io";
 import authrouter from "./routes/authrouer.js";
 import userrouter from "./routes/userroutes.js";
 import postrouter from "./routes/postroutes.js";
-import adminrouter from "./routes/adminroutes.js"
+import adminrouter from "./routes/adminroutes.js";
+import chatrouter from "./routes/chatroutes.js";
+import messagerouter from "./routes/messageroutes.js";
 
 /* configuration */
 
@@ -29,6 +33,59 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
+const httpserver = http.createServer(app);
+const io = new Server(httpserver, {
+  cors: {
+    origin: ["http://localhost:3000"],
+  },
+});
+let users = [];
+const adduser = (userid, socketid) => {
+  !users.some((user) => user.userid === userid) &&
+    users.push({ userid, socketid });
+};
+const removeuser = (socketid) => {
+  users = users.filter((user) => user.socketid !== socketid);
+};
+const getuser = (userid) => {
+  console.log(users);
+  return users.find((user) => user.userid === userid);
+};
+io.on("connection", (Socket) => {
+  console.log(users);
+  console.log("connected==============================");
+  Socket.on("adduser", (userid) => {
+    console.log("useradded");
+    adduser(userid, Socket.id);
+    io.emit("getusers", users);
+  });
+  Socket.on("sendmessage", ({ senderid, receiverid, text }) => {
+    const user = getuser(receiverid);
+    console.log(user);
+    if (user) {
+      io.to(user.socketid).emit("getmessage", {
+        senderid,
+        text,
+      });
+    }
+  });
+  Socket.on("disconnect", () => {
+    console.log("user removed");
+    removeuser(Socket.id);
+    // io.emit("getusers",users)
+  });
+  Socket.on("send-message", (data) => {
+    Socket.broadcast.emit("message-from-server", data);
+  });
+  Socket.on("typing", () => {
+    console.log("typing");
+    Socket.broadcast.emit("server-typing");
+  });
+  Socket.on("stoptyping", () => {
+    Socket.broadcast.emit("server-stoptyping");
+  });
+});
+
 /* mongose setup */
 
 const port = process.env.PORT || 6001;
@@ -40,7 +97,7 @@ mongoose
     useNewUrlParser: true,
   })
   .then(() => {
-    app.listen(port, () => console.log(`server running in ${port}`));
+    httpserver.listen(port, () => console.log(`server running in ${port}`));
   })
   .catch((er) => console.log(er));
 
@@ -49,4 +106,6 @@ mongoose
 app.use("/auth", authrouter);
 app.use("/user", userrouter);
 app.use("/post", postrouter);
-app.use("/admin",adminrouter)
+app.use("/admin", adminrouter);
+app.use("/chat", chatrouter);
+app.use("/message", messagerouter);

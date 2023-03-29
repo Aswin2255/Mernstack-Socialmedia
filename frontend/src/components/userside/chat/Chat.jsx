@@ -1,147 +1,236 @@
-import React, { useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
-import { Link, useNavigate } from 'react-router-dom'
-import Avatar from '../Avatar'
-import Bottombar from '../botombar/Bottombar'
-import Layout from '../Layout'
-import Topbar from '../topbar/Topbar'
-import './chat.css'
-
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
+import { Link, useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
+import axios from '../../../Axios';
+import Avatar from '../Avatar';
+import Bottombar from '../botombar/Bottombar';
+import Chathistory from '../Chathistory';
+import Layout from '../Layout';
+import Messages from '../Messages';
+import Topbar from '../topbar/Topbar';
+import './chat.css';
+import Chatsearch from './Chatsearch';
+import Chattopbar from './Chattopbar';
 function Chat() {
-    const navigate = useNavigate()
-    const ismobile = useMediaQuery({query:'(max-width:770px)'})
-    const [dropdown,setdropdown] = useState(false)
-    const[showuserchat,setuserchat] = useState(false)
-    const chatpagecontrol = ()=>{
-        if(ismobile){
-            navigate('/ismobile')
-        }
-        else{
-            setuserchat(true)
-        }
+  const [message, setmessage] = useState('');
+  const [sendmessage, setsendmessage] = useState(['']);
+  const [socket, setsocket] = useState(null);
+  const [chat, setchat] = useState(['']);
+  const [typing, settyping] = useState(false);
+  const [typingtime, settypingtime] = useState(false);
+  const [conversattion, setconversation] = useState([]);
+  const [currentchat, setcurrentchat] = useState();
+  const [chatmessage, setchatmessage] = useState([]);
+  const logedinuserid = useSelector((state) => state.auth.userdetails._id);
+  const [arrivalmsg, setarrivalmsg] = useState();
+  const scrollref = useRef();
+  const socketconect = useRef();
+  useEffect(() => {
+    socketconect.current = io('ws://localhost:3001');
+  }, []);
+  useEffect(() => {
+    socketconect.current.on('getmessage', (data) => {
+      console.log('message reached frontend');
+      console.log(data);
+      setarrivalmsg({
+        senderid: data.senderid,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+  useEffect(() => {
+    arrivalmsg &&
+      currentchat?.members.includes(arrivalmsg.senderid) &&
+      setchatmessage((prev) => [...prev, arrivalmsg]);
+  }, [arrivalmsg]);
+  useEffect(() => {
+    const getconversation = async () => {
+      try {
+        const { data } = await axios.get('/chat/getchat', {
+          withCredentials: true,
+        });
+        console.log(data.userchat);
+        setconversation(data.userchat);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getconversation();
+  }, [currentchat]);
+
+  useEffect(() => {
+    const getmessages = async () => {
+      try {
+        console.log('worked');
+        const { data } = await axios.get(
+          `/message/getmessage/${currentchat?._id}`,
+          { withCredentials: true }
+        );
+
+        setchatmessage(data.message);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getmessages();
+  }, [currentchat]);
+  useEffect(() => {
+    scrollref.current?.scrollIntoView();
+  }, [chatmessage, arrivalmsg]);
+
+  useEffect(() => {
+    socketconect.current.emit('adduser', logedinuserid);
+    socketconect.current.on('getusers', (users) => {
+      console.log(users);
+    });
+  }, [logedinuserid]);
+  useEffect(() => {
+    if (socket) {
+      socket.on('message-from-server', (data) => {
+        setchat((prev) => [...prev, data]);
+        console.log(chat);
+        console.log(data);
+      });
+      socket.on('server-typing', () => {
+        settyping(true);
+      });
+      socket.on('server-stoptyping', () => {
+        settyping(false);
+      });
     }
+  }, [socket]);
+  console.log('.......................');
+  console.log(chat);
+
+  const handelsubmit = async (e) => {
+    e.preventDefault();
+    /* socket.emit('send-message', message);
+    setsendmessage([...sendmessage, message]);
+    
+    setmessage('');*/
+    try {
+      const messageobj = {
+        chatid: currentchat._id,
+        text: message,
+      };
+      const receiverid = currentchat.members.find(
+        (member) => member !== logedinuserid
+      );
+      socketconect.current.emit('sendmessage', {
+        senderid: logedinuserid,
+        receiverid,
+        text: message,
+      });
+      const { data } = await axios.post('message/newmessage', messageobj, {
+        withCredentials: true,
+      });
+
+      setmessage('');
+      setchatmessage([...chatmessage, data.newmessage]);
+    } catch (error) {}
+  };
+
+  const handelchange = (e) => {
+    setmessage(e.target.value);
+    socket.emit('typing');
+    if (typingtime) clearTimeout(typingtime);
+
+    settypingtime(
+      setTimeout(() => {
+        socket.emit('stoptyping');
+      }, 1000)
+    );
+  };
+
+  const [dropdown, setdropdown] = useState(false);
+  const [showuserchat, setuserchat] = useState(false);
+
   return (
-    <div className='chatpages'>
-        <Topbar/>
-        
-        <Layout chat={true}>
-            <div className='chat-container'>
-            <div className='chathistory' style={{width: ismobile  ? '100%' : '50%'}} >                   
-                   <div className='userchat' onClick={chatpagecontrol} >
-                        <div className='avatar'>
-                            <Avatar/>
-                        </div>
-                        <div className='content'>
-                        <h1>user</h1>
-                            <p>hiii how are you</p>
-                        </div>
-                    </div>
-                
-                    <div className='userchat'>
-                    <div className='avatar'>
-                            <Avatar/>
-                        </div>
-                        <div className='content'>
-                        <h1>user</h1>
-                            <p>hiii how are you</p>
-                        </div>
-                    </div>
-                    <div className='userchat'>
-                    <div className='avatar'>
-                            <Avatar/>
-                        </div>
-                        <div className='content'>
-                            <h1>user</h1>
-                            <p>hiii how are you</p>
-                        </div>
-                    </div>
-                    <div className='userchat'>
-                    <div className='avatar'>
-                            <Avatar/>
-                        </div>
-                        <div className='content'>
-                        <h1>user</h1>
-                            <p>hiii how are you</p>
-                        </div>
-                    </div>
+    <div className="chatpages">
+      <Topbar />
+
+      <Layout chat={true}>
+        <div className="chat-container">
+          <div className="chathistory">
+            <Chatsearch currentchat={setcurrentchat} />
+            <div className="overflow-auto">
+              {conversattion.map((e) => (
+                <div className="items" onClick={() => setcurrentchat(e)}>
+                  <Chathistory conversation={e} currentuser={logedinuserid} />
                 </div>
-                <div className='showchat' style={{display: ismobile  ? 'none' : ''}}>
-                    {
-                        showuserchat ? (
-                            <>
-                             <div className='topbar'>
-                        <div className='chatavatar'>
-                            <Avatar/>
-                            <div className='username'>
-                            <p>user</p>
-                        </div>
-                        </div>
-                        
-                        <div className='options'>
-                        <button className='text-gray-400' onClick={()=>{setdropdown(!dropdown)}}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                            </svg>
-                        </button>
-                        {
-                            dropdown &&
-                            <div className='absolute -right-6 bg-white shadow-gray-300 p-3 rounded-sm border border-gray-300 w-52'>
-                            <a href='/save' className='flex py-2 px-2 gap-2  hover:bg-blue-400 hover:bg-opacity-20  rounded-md  transition-all hover:scale-110'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                                </svg>
-
-                                Clear chat</a>
-                            
-                            <a href='/save' className='flex py-2 px-2 gap-2  hover:bg-blue-400 hover:bg-opacity-20  rounded-md  transition-all hover:scale-110'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-
-                                Block & report</a>
-                           
-                           
-                        </div>
-                        }
-                       
-                        </div>
-                    </div>
-                    <div className='contents'>
-                           <div className='send'>
-                            <p>hii</p>
-                           </div>
-                           <div className='recieve'>
-                            <p>heloow</p>
-                           </div>
-                        </div>
-                    <div className='bottom-bar'>
-                        <div className='input-box'>
-                            <input type='text'></input>
-                        </div>
-                       
-                        <div className='sendbutton'>
-                            <button>Send</button>
-                        </div>
-                    </div>
-                            </>
-                        ):(
-                            <>
-                            <div style={{display:'flex' ,alignItems:'center',justifyContent:'center',height:'100%'}}>
-                                <div>
-                                    <h1>NO chat are selected</h1>
-                                </div>
-                            </div>
-                            </>
-                        )
-                    }
-                   
-
-                </div>
+              ))}
             </div>
-        </Layout>
-       <Bottombar/>
+          </div>
+          <div className="showchat">
+            {currentchat ? (
+              <>
+                <div className="topbar bg-socialblue">
+                  <Chattopbar
+                    conversation={currentchat}
+                    currentuser={logedinuserid}
+                  />
+                </div>
+                <div
+                  className="flex flex-col overflow-auto chatdisplay"
+                  ref={scrollref}
+                >
+                  {chatmessage?.map((e) => (
+                    <Messages
+                      message={e}
+                      own={e.senderid === logedinuserid}
+                      setmessage={setchatmessage}
+                    />
+                  ))}
+                </div>
+                <div className="bottom-bar">
+                  <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+                    <div></div>
+                    <div class="flex-grow ml-4">
+                      <div class="relative w-full">
+                        <input
+                          onChange={(e) => handelchange(e)}
+                          type="text"
+                          value={message}
+                          class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                        />
+                      </div>
+                    </div>
+                    <div class="ml-4">
+                      <button
+                        onClick={handelsubmit}
+                        class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
+                      >
+                        <span>Send</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                  }}
+                >
+                  <div>
+                    <h1>NO chat are selected</h1>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </Layout>
+      <Bottombar />
     </div>
-  )
+  );
 }
 
-export default Chat
+export default Chat;
