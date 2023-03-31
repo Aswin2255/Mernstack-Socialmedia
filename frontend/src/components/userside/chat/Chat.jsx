@@ -30,7 +30,8 @@ function Chat() {
   const scrollref = useRef(null);
   const socketconect = useRef();
   useEffect(() => {
-    socketconect.current = io('ws://localhost:3001');
+    // socketconect.current = io('ws://localhost:3001');
+    socketconect.current = io('ws:https://65.1.94.74/api');
   }, []);
   useEffect(() => {
     socketconect.current.on('getmessage', (data) => {
@@ -97,7 +98,7 @@ function Chat() {
       socketconect.current.on('istyping', () => {
         settyping(true);
       });
-       socketconect.current.on('server-stoptyping', () => {
+      socketconect.current.on('server-stoptyping', () => {
         settyping(false);
       });
     }
@@ -151,7 +152,7 @@ function Chat() {
 
     settypingtime(
       setTimeout(() => {
-        socketconect.current.emit('stoptyping',typingobj);
+        socketconect.current.emit('stoptyping', typingobj);
       }, 1000)
     );
   };
