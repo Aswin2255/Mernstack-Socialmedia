@@ -32,6 +32,7 @@ app.get("/", (req, res) => {
   try {
     res.sendFile(__dirname, "../frontend/build/index.html");
   } catch (error) {
+    console.log(error)
     res.status(500).send(error);
   }
 });
