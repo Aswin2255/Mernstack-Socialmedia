@@ -17,12 +17,28 @@ import adminrouter from "./routes/adminroutes.js";
 import chatrouter from "./routes/chatroutes.js";
 import messagerouter from "./routes/messageroutes.js";
 
+const app = express();
 /* configuration */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+/*--------------------- for production ------------------------------------------------------------------------*/
+
+// serving react files for production (server side rendering)
+const buildpath = path.join(__dirname, "../frontend/build");
+app.use(express.static(buildpath));
+app.get("/", (req, res) => {
+  try {
+    res.sendFile(__dirname, "../frontend/build/index.html");
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+/*----------------------------------------------------------------------------------------------------------------*/
+
 dotenv.config();
-const app = express();
+
 app.use(express.json());
 app.use(cookie());
 app.use(helmet());
@@ -52,7 +68,7 @@ const getuser = (userid) => {
   return users.find((user) => user.userid === userid);
 };
 io.on("connection", (Socket) => {
-  console.log('connectd')
+  console.log("connectd");
   console.log(users);
   Socket.on("adduser", (userid) => {
     console.log("useradded");
