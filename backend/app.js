@@ -52,8 +52,8 @@ const getuser = (userid) => {
   return users.find((user) => user.userid === userid);
 };
 io.on("connection", (Socket) => {
+  console.log('connectd')
   console.log(users);
-  console.log("connected==============================");
   Socket.on("adduser", (userid) => {
     console.log("useradded");
     adduser(userid, Socket.id);
@@ -77,12 +77,20 @@ io.on("connection", (Socket) => {
   Socket.on("send-message", (data) => {
     Socket.broadcast.emit("message-from-server", data);
   });
-  Socket.on("typing", () => {
-    console.log("typing");
-    Socket.broadcast.emit("server-typing");
+  Socket.on("typing", (data) => {
+    console.log(data);
+    const receiverid = getuser(data.receiverid);
+    if (receiverid) {
+      io.to(receiverid.socketid).emit("istyping");
+    }
+    // Socket.broadcast.emit("server-typing");
   });
-  Socket.on("stoptyping", () => {
-    Socket.broadcast.emit("server-stoptyping");
+  Socket.on("stoptyping", (data) => {
+    const receiverid = getuser(data.receiverid);
+
+    if (receiverid) {
+      Socket.to(receiverid.socketid).emit("server-stoptyping");
+    }
   });
 });
 

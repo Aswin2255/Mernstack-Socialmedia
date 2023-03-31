@@ -18,6 +18,7 @@ function Reportmodal({ show, postdetails }) {
               </div>
               {/*body*/}
               <div className="p-2">
+               
                 {
                   <textarea
                     className="grow p-3 h-14 w-full"
@@ -38,19 +39,14 @@ function Reportmodal({ show, postdetails }) {
               ) : (
                 ''
               )}
-              <div className='m-2'>
+              <div className="m-2">
                 <h1>No of reports : {postdetails.report.length}</h1>
               </div>
-              <div className='m-2 overflow-auto'>
-                <ul>
-                    {
-                        postdetails.report.map((e)=>{
-                            return(
-                                <li className='flex flex-col'>{e.reason}</li>
-                            )
-                        })
-                    }
-                </ul>
+              <div className="m-2 overflow-auto">
+                <h1 className="m-5">Reasons for reporting</h1>
+                {postdetails.report.map((e) => {
+                  return <li className="flex flex-col">{e.reason}</li>;
+                })}
               </div>
 
               {/*footer*/}

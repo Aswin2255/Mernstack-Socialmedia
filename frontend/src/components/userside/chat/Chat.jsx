@@ -14,6 +14,7 @@ import './chat.css';
 import Chatsearch from './Chatsearch';
 import Chattopbar from './Chattopbar';
 import ScrollToBottom from 'react-scroll-to-bottom';
+import { Comment } from 'react-loader-spinner';
 function Chat() {
   const [message, setmessage] = useState('');
   const [sendmessage, setsendmessage] = useState(['']);
@@ -85,21 +86,22 @@ function Chat() {
       console.log(users);
     });
   }, [logedinuserid]);
+
   useEffect(() => {
-    if (socket) {
-      socket.on('message-from-server', (data) => {
+    if (socketconect) {
+      /*socket.on('message-from-server', (data) => {
         setchat((prev) => [...prev, data]);
         console.log(chat);
         console.log(data);
-      });
-      socket.on('server-typing', () => {
+      });*/
+      socketconect.current.on('istyping', () => {
         settyping(true);
       });
-      socket.on('server-stoptyping', () => {
+       socketconect.current.on('server-stoptyping', () => {
         settyping(false);
       });
     }
-  }, [socket]);
+  }, [socketconect]);
   console.log('.......................');
   console.log(chat);
 
@@ -110,24 +112,26 @@ function Chat() {
     
     setmessage('');*/
     try {
-      const messageobj = {
-        chatid: currentchat._id,
-        text: message,
-      };
-      const receiverid = currentchat.members.find(
-        (member) => member !== logedinuserid
-      );
-      socketconect.current.emit('sendmessage', {
-        senderid: logedinuserid,
-        receiverid,
-        text: message,
-      });
-      const { data } = await axios.post('message/newmessage', messageobj, {
-        withCredentials: true,
-      });
+      if (message) {
+        const messageobj = {
+          chatid: currentchat._id,
+          text: message,
+        };
+        const receiverid = currentchat.members.find(
+          (member) => member !== logedinuserid
+        );
+        socketconect.current.emit('sendmessage', {
+          senderid: logedinuserid,
+          receiverid,
+          text: message,
+        });
+        const { data } = await axios.post('message/newmessage', messageobj, {
+          withCredentials: true,
+        });
 
-      setmessage('');
-      setchatmessage([...chatmessage, data.newmessage]);
+        setmessage('');
+        setchatmessage([...chatmessage, data.newmessage]);
+      }
     } catch (error) {
       alert(error.message);
     }
@@ -135,12 +139,19 @@ function Chat() {
 
   const handelchange = (e) => {
     setmessage(e.target.value);
-    socket.emit('typing');
+    const receiverid = currentchat.members.find(
+      (member) => member !== logedinuserid
+    );
+    const typingobj = {
+      chatid: currentchat._id,
+      receiverid,
+    };
+    socketconect.current.emit('typing', typingobj);
     if (typingtime) clearTimeout(typingtime);
 
     settypingtime(
       setTimeout(() => {
-        socket.emit('stoptyping');
+        socketconect.current.emit('stoptyping',typingobj);
       }, 1000)
     );
   };
@@ -172,6 +183,24 @@ function Chat() {
                     conversation={currentchat}
                     currentuser={logedinuserid}
                   />
+                  <div className="float-right">
+                    {typing ? (
+                      <>
+                        <Comment
+                          visible={true}
+                          height="50"
+                          width="50"
+                          ariaLabel="comment-loading"
+                          wrapperStyle={{}}
+                          wrapperClass="comment-wrapper"
+                          color="#fff"
+                          backgroundColor="#F4442E"
+                        />
+                      </>
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 </div>
 
                 <ScrollToBottom

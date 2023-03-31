@@ -1,11 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../../Axios';
 import Reportmodal from '../modals/Reportmodal';
-
+import  DataTable from 'react-data-table-component'
 function Table() {
   const [post, setpost] = useState([]);
   const [modal, showmodal] = useState(false);
   const [postdetails, setpostdetails] = useState();
+  const columns = [
+    {
+        name: 'Username',
+        selector: row => row.name,
+    },
+    {
+        name: 'Description',
+        selector: row => row.description,
+    },
+    {
+      name: 'Details',
+      selector: (row) => 
+      <p
+      onClick={() => {
+        handelmodal(row);
+      }}
+      className="text-blue-500 underline cursor-pointer"
+    >
+      see details
+    </p>
+      
+  },
+  {
+    name: 'Active',
+    selector: (row) => 
+        <label className="inline-flex relative items-center mr-5 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={!row.deleteflag}
+          onChange={() => {
+            postrestrict(row._id,row.deleteflag);
+          }}
+          className="sr-only peer"
+          readOnly
+        />
+        <div className="w-11 h-6 bg-gray-200 rounded-full peer  peer-focus:ring-green-300  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+      </label>
+      
+  },
+];
+
   useEffect(() => {
     const fetchreportedpost = async () => {
       const { data } = await axios.get(`admin/getreported`, {
@@ -33,7 +74,14 @@ function Table() {
     } catch (error) {}
   };
   return (
-    <div>
+    <>
+    <div className=' m-10 '>
+    <DataTable title = 'Reported posts' columns={columns} data={post} pagination fixedHeader fixedHeaderScrollHeight='450px' highlightOnHover />
+     {modal ? <Reportmodal show={showmodal} postdetails={postdetails} /> : ''}
+    </div>
+    </>
+   
+   /* <div>
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="p-1.5 w-full inline-block align-middle">
@@ -115,7 +163,7 @@ function Table() {
         </div>
       </div>
       {modal ? <Reportmodal show={showmodal} postdetails={postdetails} /> : ''}
-    </div>
+    </div>*/
   );
 }
 

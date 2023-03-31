@@ -224,6 +224,7 @@ function Createpost() {
               <input
                 type="file"
                 ref={fileref}
+                accept="image/png, image/jpeg"
                 id="file upload"
                 style={{ display: 'none' }}
                 onChange={handelchange}

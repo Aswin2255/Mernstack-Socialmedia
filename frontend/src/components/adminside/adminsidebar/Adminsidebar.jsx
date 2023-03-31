@@ -26,7 +26,7 @@ function Adminsidebar({ children }) {
         <div className="menu-items">
           <div>
             <Link
-              to={'/admin'}
+              to={'/admin/dashboard'}
               className={
                 location.pathname === '/admin/dashboard'
                   ? activeclase

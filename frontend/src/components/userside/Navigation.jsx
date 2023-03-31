@@ -92,7 +92,7 @@ function Navigation() {
           </svg>
           Saved posts
         </Link>
-        {/* 
+        
           <Link
           to={"/notifications"}
           className={
@@ -117,7 +117,7 @@ function Navigation() {
           </svg>
           Alert
         </Link>
-        */}
+        
         <Link
           to={`/setings/${logedinuser._id}`}
           className={
