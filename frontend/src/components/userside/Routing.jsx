@@ -33,18 +33,18 @@ function Routing() {
 
           {/* only logged in user can view the user private page page */}
           <Route element={<Userprivate />}>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/notifications" element={<Notification />}></Route>
-            <Route path="/setings/:id" element={<Setings />}></Route>
-            <Route path="/profile/:id" element={<Profile />}></Route>
-            <Route path="/profile/post/:id" element={<Profile />}></Route>
-            <Route path="/profile/about/:id" element={<About />}></Route>
-            <Route path="/profile/photos/:id" element={<Photos />}></Route>
-            <Route path="/verifyemail" element={  <Verifyemail />}></Route>
-            <Route path="/ismobile" element={<Mobchat />}></Route>
-            <Route path="/chat" element={<Chat />}></Route>
-            <Route path="/profile/friends/:id" element={<Friends />}></Route>
-            <Route path="/saved" element={<Savedpost />}></Route>
+            <Route exact path="/" element={<Home />}></Route>
+            <Route exact path="/notifications" element={<Notification />}></Route>
+            <Route exact path="/setings/:id" element={<Setings />}></Route>
+            <Route exact path="/profile/:id" element={<Profile />}></Route>
+            <Route  exact path="/profile/post/:id" element={<Profile />}></Route>
+            <Route exact path="/profile/about/:id" element={<About />}></Route>
+            <Route exact path="/profile/photos/:id" element={<Photos />}></Route>
+            <Route exact path="/verifyemail" element={  <Verifyemail />}></Route>
+            <Route exact path="/ismobile" element={<Mobchat />}></Route>
+            <Route exact path="/chat" element={<Chat />}></Route>
+            <Route exact path="/profile/friends/:id" element={<Friends />}></Route>
+            <Route exact path="/saved" element={<Savedpost />}></Route>
           </Route>
 
           {/* only logged in admin can view the adminpannel pages */}

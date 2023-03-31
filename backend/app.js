@@ -24,7 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /*--------------------- for production ------------------------------------------------------------------------*/
-
+/*
 // serving react files for production (server side rendering)
 const buildpath = path.join(__dirname, "../frontend/build");
 app.use(express.static(buildpath));
@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
     console.log(error)
     res.status(500).send(error);
   }
-});
+});*/
 /*----------------------------------------------------------------------------------------------------------------*/
 
 dotenv.config();
