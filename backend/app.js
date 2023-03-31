@@ -128,9 +128,9 @@ mongoose
 
 /* roues aetup */
 
-app.use("/auth", authrouter);
-app.use("/user", userrouter);
-app.use("/post", postrouter);
-app.use("/admin", adminrouter);
-app.use("/chat", chatrouter);
-app.use("/message", messagerouter);
+app.use("/api/auth", authrouter);
+app.use("/api/user", userrouter);
+app.use("/api/post", postrouter);
+app.use("/api/admin", adminrouter);
+app.use("/api/chat", chatrouter);
+app.use("/api/message", messagerouter);
