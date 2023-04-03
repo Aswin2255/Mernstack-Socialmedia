@@ -1,16 +1,21 @@
 .bottom-container{
     display: none;
-    justify-content: space-around;
+   
     align-items: center;
-    padding: 1rem;
+    width: 100%;
     background-color: white;
-    position: sticky;
+    position: fixed;
     bottom: 0;
 }
 .active{
     display: flex;
    background-color: blue;
    padding: 1rem;
+}
+.home,.chat,.savedpost,.settings{
+    width: 25%;
+    display: flex;
+    justify-content: center;
 }
 @media (max-width:770px){
     .bottom-container{

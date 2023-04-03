@@ -30,9 +30,9 @@ function Chat() {
   const scrollref = useRef(null);
   const socketconect = useRef();
   useEffect(() => {
-    // socketconect.current = io('ws://localhost:3001'); 
+     socketconect.current = io('ws://localhost:3001'); 
      // for production
-    socketconect.current = io('wss:https://www.connectiflix.site');
+    //socketconect.current = io('wss://www.connectiflix.site');
   }, []);
   useEffect(() => {
     socketconect.current.on('getmessage', (data) => {
@@ -205,18 +205,20 @@ function Chat() {
                   </div>
                 </div>
 
-                <ScrollToBottom
-                  ref={scrollref}
-                  className="flex flex-col overflow-y-auto chatdisplay"
-                >
-                  {chatmessage?.map((e) => (
-                    <Messages
-                      message={e}
-                      own={e.senderid === logedinuserid}
-                      setmessage={setchatmessage}
-                    />
-                  ))}
-                </ScrollToBottom>
+               {
+                chatmessage.length ?  <ScrollToBottom
+                ref={scrollref}
+                className="flex flex-col overflow-y-auto chatdisplay"
+              >
+                {chatmessage?.map((e) => (
+                  <Messages
+                    message={e}
+                    own={e.senderid === logedinuserid}
+                    setmessage={setchatmessage}
+                  />
+                ))}
+              </ScrollToBottom> : ''
+               }
 
                 <div className="bottom-bar">
                   <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">

@@ -9,7 +9,7 @@ function Chatsearch({ currentchat }) {
   const [searchvalues, setsearch] = useState('');
   const [searchresult, setsearchresult] = useState([]);
   const logedinuser = useSelector((state) => state.auth.userdetails._id);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     // this will fetch the users
     const getusers = async () => {
@@ -34,19 +34,19 @@ function Chatsearch({ currentchat }) {
         setsearchresult([]);
       }
     } catch (error) {
-        dispatch(AuthActions.UserLogout())
-        alert('unexpected error ocured')
+      dispatch(AuthActions.UserLogout());
+      alert('unexpected error ocured');
     }
   };
   const handelclick = async (users) => {
     try {
-      const { data } = await axios.get(`chat/getchat/${users._id}`,{withCredentials:true});
+      const { data } = await axios.get(`chat/getchat/${users._id}`, {
+        withCredentials: true,
+      });
       currentchat(...data.chat);
       setsearch('');
-      setsearchresult('')
-    } catch (error) {
-
-    }
+      setsearchresult('');
+    } catch (error) {}
   };
   return (
     <div>
@@ -87,22 +87,19 @@ function Chatsearch({ currentchat }) {
             ></input>
           </div>
         </form>
-        <div className="results fixed " style={{ width: '34%' }}>
+        <div className="results fixed bg-gray-100 md:w-4/12 sm:w-4/5 ">
           {searchresult.length ? (
             <>
               {searchresult.map((e) => {
                 return (
-                  <ul
-                    onClick={() => handelclick(e)}
-                    class="bg-white border border-gray-100 w-full mt-2 p-4"
-                  >
-                    <li class="pl-8 pr-2 py-1 border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-50 hover:text-gray-900">
-                      <div className="stroke-current absolute w-4 h-4 left-2 top-2">
-                        <Avatar img={e.propicpath} />
-                      </div>
+                  <div onClick={() => handelclick(e)} className="w-full flex p-4 align-middle hover:bg-gray-300 cursor-pointer">
+                    <div className="avatar">
+                      <Avatar img={e.propicpath} />
+                    </div>
+                    <div className="username">
                       <b className="ml-8">{e.name}</b>
-                    </li>
-                  </ul>
+                    </div>
+                  </div>
                 );
               })}
             </>

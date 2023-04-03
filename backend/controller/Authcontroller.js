@@ -1,17 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import user from "../models/Usermodel.js";
-//import nodemailer from "nodemailer";
-//import { SendOtp } from "../services/Mail.js";
-//import AWS from "aws-sdk";
+import nodemailer from "nodemailer";
+import { SendOtp } from "../services/Mail.js";
 
-// CONFIGURE AWS SDK
-
-/*AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: "ap-south-1",
-});*/
 
 // create token
 const maxage = 3 * 24 * 60 * 60;
@@ -32,24 +24,23 @@ export const register = async (req, res, next) => {
     const passwordhash = await bcrypt.hash(pass, salt);
 
     // generate the otp
-    // const otp = await SendOtp();
-    // console.log(otp);
+     const otp = await SendOtp();
+   
 
     const newuser = new user({
       name,
       email,
       phone,
       pass: passwordhash,
-      //  verified: false,
-      verified: true,
-      //otp,
+       verified: false,
+      otp,
     });
     const saveduser = await newuser.save();
     console.log(saveduser);
     const token = CreateToken(saveduser._id);
 
     // generate the verification email
-    /* let transporter = nodemailer.createTransport({
+     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
@@ -57,20 +48,16 @@ export const register = async (req, res, next) => {
         user: process.env.USER,
         pass: process.env.PASS,
       },
-    });*/
-    /*let transporter = nodemailer.createTransport({
-      SES: new AWS.SES({
-        apiVersion: "2010-12-01",
-      }),
-    });*/
+    });
+    
 
     // Message to be send
-    /* let message = await transporter.sendMail({
+     let message = await transporter.sendMail({
       from: "<aswinsivaallu@gmail.com>", // sender address
       to: newuser.email, // list of receivers
       subject: "verification email", // Subject line
       text: `your OTP : ${otp}`, // plain text body
-    });*/
+    });
 
     res.cookie("jwt", token, {
       withCredentials: true,

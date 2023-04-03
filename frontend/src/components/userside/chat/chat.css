@@ -34,7 +34,7 @@
   display: flex;
 
   position: absolute;
-  bottom: 20px;
+
   width: 100%;
   align-items: center;
 }
@@ -58,7 +58,6 @@
   }
   .chathistory {
     width: 100%;
-   
   }
   .showchat {
     width: 100%;
@@ -67,7 +66,7 @@
   .chatdisplay {
     height: 50%;
   }
-  .bottom-bar{
+  .bottom-bar {
     position: relative;
   }
 }
