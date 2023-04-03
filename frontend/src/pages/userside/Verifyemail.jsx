@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import axios from '../../Axios';
-import { AuthActions } from '../store/Authslice';
-import Topbar from '../components/userside/topbar/Topbar';
-import Cards from '../components/userside/Cards';
+import Topbar from '../../components/userside/topbar/Topbar';
+import Cards from '../../components/userside/Cards';
+import { AuthActions } from '../../store/Authslice';
 
 function Verifyemail() {
   console.log('hiii');
