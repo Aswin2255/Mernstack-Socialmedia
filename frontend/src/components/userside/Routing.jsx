@@ -17,7 +17,8 @@ import Userprivate from './Protectedcomponents/Userprivate';
 import Usermanagement from '../../pages/adminside/Usermanagement';
 import Adminlogin from '../../pages/adminside/Adminlogin';
 import Adminprivate from '../adminside/Adminprivate';
-import Verifyemail from '../Verifyemail';
+import Verifyemail from '../../pages/Verifyemail';
+
 
 function Routing() {
   let UserLogedin = useSelector((state) => state.auth.Userisloggedin);

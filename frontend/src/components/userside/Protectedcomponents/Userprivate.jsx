@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
-import Verifyemail from '../../Verifyemail';
+import Verifyemail from '../../../pages/Verifyemail';
+
 
 
 function Userprivate() {

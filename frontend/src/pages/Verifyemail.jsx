@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import axios from '../../Axios';
-import Cards from '../../components/userside/Cards';
-import Topbar from '../../components/userside/topbar/Topbar';
-import { AuthActions } from '../../store/Authslice';
+import { AuthActions } from '../store/Authslice';
+import Topbar from '../components/userside/topbar/Topbar';
+import Cards from '../components/userside/Cards';
 
 function Verifyemail() {
   console.log('hiii');
@@ -48,6 +48,7 @@ function Verifyemail() {
         <div className="max-w-md mx-auto grow ">
           <h1 className="text-6xl mb-4  text-gray-400  text-center justify-center m-4">
             Verify-Email
+            <p>* if otp not found check please check your spam mail also</p>
           </h1>
           <Cards>
             <div>
