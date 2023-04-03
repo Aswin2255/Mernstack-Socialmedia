@@ -30,7 +30,7 @@ function Chat() {
   const scrollref = useRef(null);
   const socketconect = useRef();
   useEffect(() => {
-    // socketconect.current = io('ws://localhost:3001'); 
+    //socketconect.current = io('ws://localhost:3001'); 
      // for production
     socketconect.current = io('wss://www.connectiflix.site');
   }, []);
