@@ -4,7 +4,7 @@ import user from "../models/Usermodel.js";
 
 /* verify user email  */
 
-/*export const VerifyEmail = async (req, res, next) => {
+export const VerifyEmail = async (req, res, next) => {
   try {
     const userid = req.user;
     const userfind = await user.findById(userid);
@@ -26,7 +26,7 @@ import user from "../models/Usermodel.js";
       res.status(401).json({ status: false, message: "invalid otp" });
     }
   } catch (error) {}
-}; */
+}; 
 
 /* get a user by id */
 

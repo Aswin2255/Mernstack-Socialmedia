@@ -1,9 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
-import Verifyemail from '../../../pages/Verifyemail';
-
-
+import Verifyemail from '../../../pages/userside/Verifyemail';
 
 function Userprivate() {
   let Logedin = useSelector((state) => state.auth.userdetails);
@@ -14,7 +12,7 @@ function Userprivate() {
     Logedin?.verified === true ? (
       <Outlet />
     ) : Logedin?.verified === false ? (
-      <Verifyemail />
+      <Verifyemail/>
     ) : (
       <Navigate to={'/login'}></Navigate>
     )

@@ -34,6 +34,7 @@ export const register = async (req, res, next) => {
       pass: passwordhash,
        verified: false,
       otp,
+      
     });
     const saveduser = await newuser.save();
     console.log(saveduser);
