@@ -17,6 +17,7 @@ import Userprivate from './Protectedcomponents/Userprivate';
 import Usermanagement from '../../pages/adminside/Usermanagement';
 import Adminlogin from '../../pages/adminside/Adminlogin';
 import Adminprivate from '../adminside/Adminprivate';
+import Verifyemail from '../Verifyemail';
 
 function Routing() {
   let UserLogedin = useSelector((state) => state.auth.Userisloggedin);
@@ -29,6 +30,7 @@ function Routing() {
 
           {/* only logged in user can view the user private page page */}
           <Route element={<Userprivate />}>
+          <Route exact path="/verifyemail" element={  <Verifyemail />}></Route>
             <Route exact path="/" element={<Home />}></Route>
             <Route
               exact
