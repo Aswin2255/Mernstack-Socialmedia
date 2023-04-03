@@ -56,6 +56,8 @@ const io = new Server(httpserver, {
     origin: ["http://localhost:3000"],
   },
 });
+console.log('.......')
+
 let users = [];
 const adduser = (userid, socketid) => {
   !users.some((user) => user.userid === userid) &&

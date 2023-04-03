@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Friendinfo from '../../../userside/Friendinfo';
+
 import axios from '../../../../Axios';
 
 import Cards from '../../Cards';

@@ -4,7 +4,7 @@ import user from "../models/Usermodel.js";
 
 /* verify user email  */
 
-export const VerifyEmail = async (req, res, next) => {
+/*export const VerifyEmail = async (req, res, next) => {
   try {
     const userid = req.user;
     const userfind = await user.findById(userid);
@@ -26,7 +26,7 @@ export const VerifyEmail = async (req, res, next) => {
       res.status(401).json({ status: false, message: "invalid otp" });
     }
   } catch (error) {}
-};
+}; */
 
 /* get a user by id */
 
@@ -36,7 +36,7 @@ export const getuser = async (req, res, next) => {
     let id = req.params.id;
     const userfind = await user.find({ _id: id });
 
-   // console.log(userfind);
+    // console.log(userfind);
     if (userfind[0].verified) {
       res.status(200).json({
         status: true,
@@ -56,7 +56,7 @@ export const getuser = async (req, res, next) => {
 export const getfollowers = async (req, res) => {
   try {
     const { id } = req.params;
-  //  console.log(id + "jjj");
+    //  console.log(id + "jjj");
     const userfind = await user.findById(id);
     // console.log(userfind.followers)
     let folowerslist = [];
@@ -133,7 +133,7 @@ export const addremovefriend = async (req, res) => {
         new: true,
       }
     );
-   /* console.log("--------------------------------------------------------");
+    /* console.log("--------------------------------------------------------");
     console.log(updatfriend);
     console.log("==========================================================");
     console.log(updateuser);*/
@@ -215,7 +215,6 @@ export const updateUser = async (req, res) => {
         },
       }
     );
-    
 
     await Post.updateMany(
       { "taggeduser._id": mongoose.Types.ObjectId(id) },
@@ -251,9 +250,14 @@ export const ChangeProfile = async (req, res) => {
         new: true,
       }
     );
-    await Post.updateMany({userid:userid},{$set:{
-      userpicturepath : filepath
-    }})
+    await Post.updateMany(
+      { userid: userid },
+      {
+        $set: {
+          userpicturepath: filepath,
+        },
+      }
+    );
     await Post.updateMany(
       { "comments.userid": userid },
       {
@@ -263,15 +267,13 @@ export const ChangeProfile = async (req, res) => {
       }
     );
     console.log(updateduser);
-    res
-      .status(200)
-      .json({
-        status: true,
-        updateduser: updateduser,
-        msg: "profile pic updated",
-      });
+    res.status(200).json({
+      status: true,
+      updateduser: updateduser,
+      msg: "profile pic updated",
+    });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(404).json({ status: false, msg: error.message });
   }
 };

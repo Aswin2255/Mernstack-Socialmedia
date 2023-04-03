@@ -9,7 +9,7 @@ function Chathistory({conversation,currentuser}) {
     const friendid = conversation.members.find((e)=>e!==currentuser)
     const getuser = async() =>{
       try {
-        const {data} = await axios.get(`/user/getuser/${friendid}`)
+        const {data} = await axios.get(`/user/getuser/${friendid}`,{withCredentials:true})
         setuser(data.userdetails)
         
       } catch (error) {

@@ -1,9 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import About from '../../pages/userside/About';
 import Admin from '../../pages/adminside/Admin';
-import Friends from '../../pages/userside/Friends';
 import Home from '../../pages/userside/Home';
 import Loging from '../../pages/userside/Loging';
 import Notification from '../../pages/userside/Notification';
@@ -14,9 +12,7 @@ import Savedpost from '../../pages/userside/Savedpost';
 import Setings from '../../pages/userside/Setings';
 import Signup from '../../pages/userside/Signup';
 import Verify from '../../pages/userside/Verify';
-import Verifyemail from '../../pages/userside/Verifyemail';
 import Chat from '../../components/userside/chat/Chat';
-import Mobchat from '../../components/userside/chat/Mobchat';
 import Userprivate from './Protectedcomponents/Userprivate';
 import Usermanagement from '../../pages/adminside/Usermanagement';
 import Adminlogin from '../../pages/adminside/Adminlogin';
@@ -34,16 +30,23 @@ function Routing() {
           {/* only logged in user can view the user private page page */}
           <Route element={<Userprivate />}>
             <Route exact path="/" element={<Home />}></Route>
-            <Route exact path="/notifications" element={<Notification />}></Route>
+            <Route
+              exact
+              path="/notifications"
+              element={<Notification />}
+            ></Route>
             <Route exact path="/setings/:id" element={<Setings />}></Route>
             <Route exact path="/profile/:id" element={<Profile />}></Route>
-            <Route  exact path="/profile/post/:id" element={<Profile />}></Route>
-            <Route exact path="/profile/about/:id" element={<About />}></Route>
-            <Route exact path="/profile/photos/:id" element={<Photos />}></Route>
-            <Route exact path="/verifyemail" element={  <Verifyemail />}></Route>
-            <Route exact path="/ismobile" element={<Mobchat />}></Route>
+            <Route exact path="/profile/post/:id" element={<Profile />}></Route>
+
+            <Route
+              exact
+              path="/profile/photos/:id"
+              element={<Photos />}
+            ></Route>
+
             <Route exact path="/chat" element={<Chat />}></Route>
-            <Route exact path="/profile/friends/:id" element={<Friends />}></Route>
+
             <Route exact path="/saved" element={<Savedpost />}></Route>
           </Route>
 

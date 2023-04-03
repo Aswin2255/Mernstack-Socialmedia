@@ -6,12 +6,7 @@ import { io } from 'socket.io-client';
 import Topbar from '../../components/userside/topbar/Topbar';
 import Bottombar from '../../components/userside/botombar/Bottombar';
 
-
 function Home() {
-  const socketconect = useRef();
-  useEffect(() => {
-    socketconect.current = io('ws://localhost:3001');
-  }, []);
   return (
     <>
       <Topbar />
