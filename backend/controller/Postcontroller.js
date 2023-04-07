@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Post from "../models/Postmodel.js";
 import user from "../models/Usermodel.js";
+import Notifications from "../models/Notifications.js";
 
 /* create */
 
@@ -108,15 +109,31 @@ export const likepost = async (req, res) => {
     console.log(req.user);
     // this will give the logged in user
     const userid = req.user;
+    const userfind = await user.findById(userid)
     const postfind = await Post.findById(id);
     // this will check whether the hashtable contain liked user
     const isliked = postfind.likes.get(userid);
     if (isliked) {
       // if the hashtable contain the liked user it will delete it from the map
       postfind.likes.delete(userid);
+      const isnotification = await Notifications.find({userid:postfind.userid,postid:postfind._id,likeduser:mongoose.Types.ObjectId(req.user)})
+      if(isnotification.length){
+        await Notifications.deleteMany({userid:postfind.userid,postid:postfind._id,likeduser:mongoose.Types.ObjectId(req.user)})
+      }
     } else {
       // if not in hashtable we set the map value {userid:true}
       postfind.likes.set(userid, true);
+      
+      const newnotification = new Notifications({
+        userid:postfind.userid,
+        likeduser:mongoose.Types.ObjectId(req.user),
+        postid:postfind._id,
+        username:userfind.name,
+        propicpath:userfind.propicpath,
+        read:false
+      })
+      await newnotification.save()
+    
     }
     const updatedpost = await Post.findByIdAndUpdate(
       id,

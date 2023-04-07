@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import axios from '../../../../Axios';
 import Avatar from '../../Avatar';
+import { AuthActions } from '../../../../store/Authslice';
 
 function Tagmodal({ modal, tagdata }) {
   const [alluser, setalluser] = useState([]);
   const logedinuser = useSelector((state) => state.auth.userdetails);
+  const [tagdisabel, setdisabel] = useState(false);
+  const dispatch = useDispatch();
   const [taged, setaged] = useState({
     tageduser: [],
     username: [],
   });
+
   const submittag = () => {
     try {
       tagdata(taged);
@@ -20,7 +24,12 @@ function Tagmodal({ modal, tagdata }) {
   };
   const handelchange = (e, name) => {
     const { tageduser, username } = taged;
+
     if (e.target.checked) {
+      if (tageduser.length > 1) {
+        setdisabel(true);
+        return;
+      }
       setaged({
         tageduser: [...tageduser, e.target.value],
         username: [...username, name],
@@ -28,27 +37,29 @@ function Tagmodal({ modal, tagdata }) {
     } else {
       setaged({
         tageduser: tageduser.filter((item) => item !== e.target.value),
-        username: tageduser.filter((item) => item !== name),
+        username: username.filter((item) => item !== name),
       });
+      setdisabel(false);
     }
   };
   console.log(taged);
-  useEffect(() => {
-    const fetchalluser = async () => {
-      try {
-        const { data } = await axios.get('/user/alluser', {
-          withCredentials: true,
-        });
-        if (data.status) {
-          setalluser(data.allusers);
-          console.log(data.allusers);
-          console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-          console.log(alluser);
-        }
-      } catch (error) {
-        alert('error happend');
+  let usertotag;
+  const fetchalluser = async () => {
+    try {
+      const { data } = await axios.get(`/user/Following/${logedinuser._id}`, {
+        withCredentials: true,
+      });
+      if (data.status) {
+        usertotag = data.followers.slice(0, 3);
+        setalluser(usertotag);
+        console.log(data.allusers);
       }
-    };
+    } catch (error) {
+      alert('error ocured');
+      dispatch(AuthActions.UserLogout());
+    }
+  };
+  useEffect(() => {
     fetchalluser();
   }, []);
   return (
@@ -82,6 +93,7 @@ function Tagmodal({ modal, tagdata }) {
                   </svg>{' '}
                   Tag people
                 </p>
+
                 <button
                   onClick={() => modal(false)}
                   className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -102,15 +114,16 @@ function Tagmodal({ modal, tagdata }) {
                   </svg>
                 </button>
               </div>
+
               {/*body*/}
-              <div className="relative p-6  m-3 overflow-y-scroll ">
+              <div className="relative p-6  m-3 overflow-scroll h-1/2 ">
                 {alluser.map((user) => {
                   return (
                     <div className="flex justify-between">
                       {user._id !== logedinuser._id ? (
                         <>
                           <div className="m-3">
-                            <Avatar />
+                            <Avatar img={user.propicpath} />
                           </div>
 
                           <div className="m-3">
@@ -129,7 +142,17 @@ function Tagmodal({ modal, tagdata }) {
                               onChange={(e) => {
                                 handelchange(e, user.name);
                               }}
-                              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                              checked={
+                                taged.tageduser.includes(user._id)
+                                  ? true
+                                  : false
+                              }
+                              disabled={
+                                taged.tageduser.includes(user._id)
+                                  ? false
+                                  : tagdisabel
+                              }
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             ></input>
                           </div>
                         </>

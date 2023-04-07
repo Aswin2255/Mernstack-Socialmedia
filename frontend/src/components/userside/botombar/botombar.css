@@ -1,24 +1,30 @@
-.bottom-container{
-    display: none;
-   
-    align-items: center;
-    width: 100%;
-    background-color: white;
-    position: fixed;
-    bottom: 0;
+.bottom-container {
+  display: none;
+
+  align-items: center;
+  width: 100%;
+  background-color: white;
+  position: sticky;
+  bottom: 0;
 }
-.active{
+.active {
+  display: flex;
+  background-color: blue;
+  padding: 1rem;
+}
+.home,
+.chat,
+.savedpost,
+.settings {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+@media (max-width: 770px) {
+  .bottom-container {
     display: flex;
-   background-color: blue;
-   padding: 1rem;
-}
-.home,.chat,.savedpost,.settings{
-    width: 25%;
-    display: flex;
-    justify-content: center;
-}
-@media (max-width:770px){
-    .bottom-container{
-        display: flex;
-    }
+  
+      margin-top: 2rem;
+    
+  }
 }

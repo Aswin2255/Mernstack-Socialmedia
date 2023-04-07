@@ -8,7 +8,7 @@ export const getChat = async(req,res)=>{
         res.status(200).json({status:true,userchat:Allchat})
         
     } catch (error) {
-        console.log(error.message)
+        res.status(400).json({status:false,msg:error.message})
         
     }
 }

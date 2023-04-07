@@ -68,8 +68,6 @@ function Createpost() {
           dispatch(AuthActions.UserLogout());
           setloading(false);
         }
-        console.log('refrdsk');
-        console.log(data);
       } else {
         alert('some error occured');
       }

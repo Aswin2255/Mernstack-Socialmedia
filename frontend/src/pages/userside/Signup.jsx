@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Cards from '../../components/userside/Cards';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from '../../Axios';
-import { Audio } from 'react-loader-spinner';
+import { Audio, Circles } from 'react-loader-spinner';
 import { useDispatch } from 'react-redux';
 import { AuthActions } from '../../store/Authslice';
 import Topbar from '../../components/userside/topbar/Topbar';
@@ -77,7 +77,7 @@ function Signup() {
       field: 'cpasser',
       payload: !passmatch,
     });
-    if (emailValid && passvalid && passmatch && usernamevalid) {
+    if (emailValid && passvalid && passmatch && usernamevalid && phonevalid) {
       setloader(true);
       await axios
         .post('/auth/register', formstate, { withCredentials: true })
@@ -111,146 +111,211 @@ function Signup() {
 
   return (
     <>
-      <Topbar />
-      <div className="h-screen flex items-center">
-        <ToastContainer />
-        {loader ? (
-          <div className="mx-auto">
-            <Audio
-              height="80"
-              width="80"
-              radius="9"
-              color="green"
-              ariaLabel="loading"
-              wrapperStyle
-              wrapperClass
-            />
-          </div>
-        ) : (
-          <div className="max-w-md mx-auto grow ">
-            <div className="flex">
-              <img
-                src="https://flowbite.com/docs/images/logo.svg"
-                className="h-6 ml-3 mr-3 sm:h-9 "
-                alt="Flowbite Logo"
-              ></img>
-              <span className="logoname">Connect</span>
-            </div>
+    
+      <ToastContainer/>
+   {
+    loader ? <div className='h-screen flex justify-center  bg-socialblue'>
+      <Circles
+  height="80"
+  width="80"
+  radius="9"
+  color="green"
+  ariaLabel="loading"
+  wrapperStyle
+  wrapperClass
+/>
 
-            <p class="m-4">Create your account</p>
-            <Cards>
-              <div>
-                <input
-                  className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  value={formstate.name}
-                  placeholder="Enter the Name"
-                  name="name"
-                  onChange={(e) => {
-                    handelchange(e);
-                  }}
-                  type="text"
-                ></input>
-                {formstate.nameer ? (
-                  <label className="text-red-700">Invalid username</label>
-                ) : (
-                  ''
-                )}
-              </div>
-              <div>
-                <input
-                  className="block w-full p-2.5  mb-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  value={formstate.email}
-                  placeholder="Enter the email"
-                  name="email"
-                  onChange={(e) => {
-                    handelchange(e);
-                  }}
-                  type="text"
-                ></input>
-                {formstate.emailer ? (
-                  <label className="text-red-700">Invalid email</label>
-                ) : (
-                  ''
-                )}
-              </div>
-              <div>
-                <input
-                  className="block w-full p-2.5  mb-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  value={formstate.phone}
-                  placeholder="Enter the phone number"
-                  name="phone"
-                  onChange={(e) => {
-                    handelchange(e);
-                  }}
-                  type="text"
-                ></input>
-                {formstate.phoneer ? (
-                  <label className="text-red-700">Invalid phone number</label>
-                ) : (
-                  ''
-                )}
-              </div>
-              <div>
-                <input
-                  className="block w-full p-2.5 mb-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  value={formstate.pass}
-                  placeholder="Enter the password"
-                  name="pass"
-                  onChange={(e) => {
-                    handelchange(e);
-                  }}
-                  type="password"
-                ></input>
-                {formstate.passer ? (
-                  <label className="text-red-700">Invalid password</label>
-                ) : (
-                  ''
-                )}
-              </div>
-              <div>
-                <input
-                  className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  value={formstate.cpass}
-                  placeholder="Confirm password"
-                  name="cpass"
-                  onChange={(e) => {
-                    handelchange(e);
-                  }}
-                  type="password"
-                ></input>
-                {formstate.cpasser ? (
-                  <label className="text-red-700">Password not matched</label>
-                ) : (
-                  ''
-                )}
-              </div>
-              <div className="flex gap-4 items-center justify-center m-4">
-                <button
-                  onClick={handelsubmit}
-                  className="bg-socialblue text-white px-6 py-1 rounded-md"
-                >
-                  Signup
-                </button>
-              </div>
-              <Link className=" hidden  gap-4 items-center justify-center m-4 p-4 border-b-gray-100 hover:bg-socialblue hover:text-white hover:scale-110 transition-all">
-                <svg
-                  className="h-8"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 488 512"
-                >
-                  <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
-                </svg>
-                Signup with Google
-              </Link>
-              <div className="grow text-right">
-                <Link to={'/login'} className="font-semibold underline">
-                  Sign in
-                </Link>
-              </div>
-            </Cards>
-          </div>
+    </div> : <>
+    <div className="main flex h-screen">
+   
+   <div className="leftside bg-socialblue w-2/6 hidden  md:flex lg:flex" style={{ marginLeft: 0 }}>
+<div className="heading  items-center justify-center align-middle ml-1  ">
+  <div className="brand flex items-center justify-center">
+    <img
+      className=" mr-4 h-10 w-auto"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7OT_7ND-gEVZwvYx1--tEjdbrX6avwSJGTg&usqp=CAU"
+      alt="Your Company"
+    ></img>
+    <h1 class="text-5xl  font-bold leading-normal mt-0 mb-2 text-white ">
+      connect
+    </h1>
+  </div>
+  <div className="captions mb-4">
+    <h1 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
+      Welcome
+    </h1>
+    <p className="font-light text-white text-center mt-4 mb-16 text-2xl lg:block md:block hidden ">
+      Please Enter your personal information to create an Account
+    </p>
+  </div>
+  <div className="lg:flex md:flex  lg:flex-col  md:flex-col align-middle justify-center items-center  hidden">
+    <div className="poster w-1/2">
+      <img
+        className=""
+        src="https://rurutek.com/jio/assets/img/login-animate.gif"
+      ></img>
+    </div>
+    <div></div>
+  </div>
+</div>
+</div>
+<div className="rightside w-full lg:w-4/6 md:w-4/5 ">
+<section class="bg-gray-50 ">
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div class="w-full  rounded-lg  md:mt-0 sm:max-w-md xl:p-0">
+    <div className="brand flex lg:hidden md:hidden items-center justify-center">
+    <img
+      className=" mr-4 h-10 w-auto"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7OT_7ND-gEVZwvYx1--tEjdbrX6avwSJGTg&usqp=CAU"
+      alt="Your Company"
+    ></img>
+    <h1 class="text-5xl  font-bold leading-normal mt-0 mb-2 text-black ">
+      connect
+    </h1>
+  </div>
+     
+      <form className="mt-4 space-y-6" action="#" method="POST">
+        <div className="-space-y-px rounded-md shadow-sm">
+          <div>
+            <div className="mb-2">
+              <label className="font-medium ">Name</label>
+            </div>
+            <div className="mb-2">
+              <input
+                className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                value={formstate.name}
+          placeholder="Enter the Name"
+          name="name"
+          onChange={(e) => {
+            handelchange(e);
+          }}
+              ></input>
+           {formstate.nameer ? (
+          <label className="text-red-400">Invalid username</label>
+        ) : (
+          ''
         )}
-      </div>
+            </div>
+          </div>
+          <div>
+            <div className="mb-2">
+              <label className="font-medium ">Email address</label>
+            </div>
+            <div className="mb-2">
+              <input
+                className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                value={formstate.email}
+                placeholder="Enter the email"
+                name="email"
+                onChange={(e) => {
+                  handelchange(e);
+                }}
+              ></input>
+              {formstate.emailer ? (
+          <label className="text-red-400">Invalid email</label>
+        ) : (
+          ''
+        )}
+            </div>
+          </div>
+          <div>
+            <div className="mb-2">
+              <label className="font-medium ">Mobile number</label>
+            </div>
+            <div className="mb-2">
+              <input
+                className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                value={formstate.phone}
+          placeholder="Enter the mobile number"
+          name="phone"
+          onChange={(e) => {
+            handelchange(e);
+          }}
+          type="number"
+              ></input>
+              {formstate.phoneer ? (
+          <label className="text-red-400">Invalid phone number</label>
+        ) : (
+          ''
+        )}
+            </div>
+          </div>
+          <div>
+            <div className="mb-2">
+              <label className="font-medium ">password</label>
+            </div>
+            <div className="mb-2">
+              <input
+                className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                value={formstate.pass}
+          placeholder="Enter the password"
+          name="pass"
+          onChange={(e) => {
+            handelchange(e);
+          }}
+          type="password"
+              ></input>
+              {formstate.passer ? (
+          <label className="text-red-400">Invalid password</label>
+        ) : (
+          ''
+        )}
+            </div>
+          </div>
+          <div>
+            <div className="mb-2">
+              <label className="font-medium ">Confirm password</label>
+            </div>
+            <div className="mb-2">
+              <input
+                className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                value={formstate.cpass}
+                placeholder="Enter password again"
+                name="cpass"
+                onChange={(e) => {
+                  handelchange(e);
+                }}
+                type="password"
+              ></input>
+              {formstate.cpasser ? (
+          <label className="text-red-700">Password not matched</label>
+        ) : (
+          ''
+        )}
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center"></div>
+
+          <div class="text-sm">
+            <Link
+              to={'/login'}
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              Sign in
+            </Link>
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="button"
+            onClick={handelsubmit}
+            class="group relative flex w-full justify-center rounded-md bg-socialblue px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Sign up
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+</div>
+</div>
+    </>
+   }
     </>
   );
 }

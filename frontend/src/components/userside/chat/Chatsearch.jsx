@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from '../../../Axios';
 import { AuthActions } from '../../../store/Authslice';
 import Avatar from '../Avatar';
+import './chat.css';
 
 function Chatsearch({ currentchat }) {
   const [fetcheduser, setfetcheduser] = useState([]);
@@ -27,7 +28,7 @@ function Chatsearch({ currentchat }) {
         const result = fetcheduser.filter(
           (event) =>
             event.name.includes(e.target.value) && event._id !== logedinuser
-        );
+        )
 
         setsearchresult(result);
       } else {
@@ -46,7 +47,10 @@ function Chatsearch({ currentchat }) {
       currentchat(...data.chat);
       setsearch('');
       setsearchresult('');
-    } catch (error) {}
+    } catch (error) {
+      dispatch(AuthActions.UserLogout());
+      alert('unexpected error ocured');
+    }
   };
   return (
     <div>
@@ -81,18 +85,22 @@ function Chatsearch({ currentchat }) {
               type="search"
               id="default-search"
               class="block w-full p-4 pl-10 text-sm text--900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search Mockups, Logos..."
+              placeholder="Search for chats.."
               required
               value={searchvalues}
             ></input>
           </div>
         </form>
-        <div className="results fixed bg-gray-100 md:w-4/12 sm:w-4/5 ">
-          {searchresult.length ? (
+        {searchresult.length ? (
             <>
+        <div className="results fixed bg-gray-100 md:w-4/12 sm:w-4/5 sm:h-38 overflow-y-scroll ">
+         
               {searchresult.map((e) => {
                 return (
-                  <div onClick={() => handelclick(e)} className="w-full flex p-4 align-middle hover:bg-gray-300 cursor-pointer">
+                  <div
+                    onClick={() => handelclick(e)}
+                    className="w-full flex p-4 align-middle hover:bg-gray-300 cursor-pointer"
+                  >
                     <div className="avatar">
                       <Avatar img={e.propicpath} />
                     </div>
@@ -102,11 +110,12 @@ function Chatsearch({ currentchat }) {
                   </div>
                 );
               })}
+               </div>
             </>
           ) : (
             ''
           )}
-        </div>
+       
       </div>
     </div>
   );

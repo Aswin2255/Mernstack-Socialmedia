@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
@@ -14,7 +14,8 @@ import './chat.css';
 import Chatsearch from './Chatsearch';
 import Chattopbar from './Chattopbar';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import { Comment } from 'react-loader-spinner';
+import { ColorRing, Comment } from 'react-loader-spinner';
+import { AuthActions } from '../../../store/Authslice';
 function Chat() {
   const [message, setmessage] = useState('');
   const [sendmessage, setsendmessage] = useState(['']);
@@ -29,9 +30,11 @@ function Chat() {
   const [arrivalmsg, setarrivalmsg] = useState();
   const scrollref = useRef(null);
   const socketconect = useRef();
+  const [loading,setloading] = useState(true)
+  const dispatch = useDispatch()
   useEffect(() => {
-    //socketconect.current = io('ws://localhost:3001'); 
-     // for production
+    //socketconect.current = io('ws://localhost:3001');
+    // for production
     socketconect.current = io('wss://www.connectiflix.site');
   }, []);
   useEffect(() => {
@@ -58,8 +61,10 @@ function Chat() {
         });
         console.log(data.userchat);
         setconversation(data.userchat);
+        setloading(false)
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
+        dispatch(AuthActions.UserLogout())
       }
     };
     getconversation();
@@ -169,12 +174,24 @@ function Chat() {
         <div className="chat-container">
           <div className="chathistory">
             <Chatsearch currentchat={setcurrentchat} />
-            <div className="overflow-auto">
-              {conversattion.map((e) => (
+            <div className="conversations overflow-y-scroll overflow-x-hidden">
+             {
+              loading ? <ColorRing
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="blocks-loading"
+              wrapperStyle={{}}
+              wrapperClass="blocks-wrapper"
+              colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+            /> : <>
+               {conversattion.map((e) => (
                 <div className="items" onClick={() => setcurrentchat(e)}>
                   <Chathistory conversation={e} currentuser={logedinuserid} />
                 </div>
               ))}
+              </>
+             }
             </div>
           </div>
           <div className="showchat">
@@ -205,20 +222,18 @@ function Chat() {
                   </div>
                 </div>
 
-               {
-                chatmessage.length ?  <ScrollToBottom
-                ref={scrollref}
-                className="flex flex-col overflow-y-auto chatdisplay"
-              >
-                {chatmessage?.map((e) => (
-                  <Messages
-                    message={e}
-                    own={e.senderid === logedinuserid}
-                    setmessage={setchatmessage}
-                  />
-                ))}
-              </ScrollToBottom> : ''
-               }
+                <ScrollToBottom
+                  ref={scrollref}
+                  className="flex flex-col overflow-scroll overflow-x-hidden chatdisplay"
+                >
+                  {chatmessage?.map((e) => (
+                    <Messages
+                      message={e}
+                      own={e.senderid === logedinuserid}
+                      setmessage={setchatmessage}
+                    />
+                  ))}
+                </ScrollToBottom>
 
                 <div className="bottom-bar">
                   <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
@@ -255,7 +270,7 @@ function Chat() {
                   }}
                 >
                   <div>
-                    <h1>NO chat are selected</h1>
+                    <h1 className='text-sm font-medium text-gray-400'> no chat are selected</h1>
                   </div>
                 </div>
               </>

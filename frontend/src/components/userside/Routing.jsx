@@ -18,6 +18,8 @@ import Usermanagement from '../../pages/adminside/Usermanagement';
 import Adminlogin from '../../pages/adminside/Adminlogin';
 import Adminprivate from '../adminside/Adminprivate';
 import Verifyemail from '../../pages/userside/Verifyemail';
+import New from '../../pages/userside/New';
+import Lnew from '../../pages/userside/Lnew';
 
 
 
@@ -28,7 +30,8 @@ function Routing() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/s" element={<Verify />}></Route>
+         
+
 
           {/* only logged in user can view the user private page page */}
           <Route element={<Userprivate />}>

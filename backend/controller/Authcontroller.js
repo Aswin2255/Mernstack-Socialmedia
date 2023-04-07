@@ -57,7 +57,7 @@ export const register = async (req, res, next) => {
       from: "<aswinsivaallu@gmail.com>", // sender address
       to: newuser.email, // list of receivers
       subject: "verification email", // Subject line
-      text: `your OTP : ${otp}`, // plain text body
+      text: ` welcome to connect  your OTP for registration is : ${otp}`, // plain text body
     });
 
     res.cookie("jwt", token, {

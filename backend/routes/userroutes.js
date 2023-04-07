@@ -7,6 +7,7 @@ import {
   getfollowing,
   getLoginuser,
   getuser,
+  Updatenotifications,
   updateUser,
    VerifyEmail,
 } from "../controller/Usercontroller.js";
@@ -32,4 +33,5 @@ userrouter.patch(
   upload.single("image"),
   ChangeProfile
 );
+userrouter.patch('/updatenotifications/:id',verifytoken,Updatenotifications)
 export default userrouter;

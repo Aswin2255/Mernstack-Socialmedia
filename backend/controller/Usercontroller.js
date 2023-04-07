@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Post from "../models/Postmodel.js";
 import user from "../models/Usermodel.js";
+import Notifications from "../models/Notifications.js";
 
 /* verify user email  */
 
@@ -9,7 +10,7 @@ export const VerifyEmail = async (req, res, next) => {
     const userid = req.user;
     const userfind = await user.findById(userid);
   //  console.log(userfind);
-    if (userfind.otp === parseInt(req.body.otp)) {
+    if (userfind.otp === parseInt(req.body.otpvalues)) {
       const verified = await user.findByIdAndUpdate(
         userid,
         { verified: true },
@@ -277,3 +278,22 @@ export const ChangeProfile = async (req, res) => {
     res.status(404).json({ status: false, msg: error.message });
   }
 };
+export const Updatenotifications = async (req,res)=>{
+  try {
+    const {id} = req.params
+    console.log(id)
+    await Notifications.updateMany({userid:id},{$set:{
+      read:true
+    }})
+    const allnotifications = await Notifications.find({userid:mongoose.Types.ObjectId(id)})
+    const notifications = allnotifications.filter((items)=>
+      !items.likeduser.equals(id)
+    )
+    console.log(notifications)
+    res.status(200).json({status:true,notifications:notifications,msg:'user notifications fetched and marked as read'})
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
+}

@@ -1,120 +1,277 @@
-import React from 'react'
-
+import React, { useReducer } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from '../../Axios';
+import { AuthActions } from '../../store/Authslice';
 function Verify() {
+  const Dispatch = useDispatch();
+  const Navigate = useNavigate();
+  
+  // initial state represent the initial state of the form
+  const initialstate = {
+    email: '',
+    pass: '',
+    emailer: false,
+    passer: false,
+  };
+  // generating error message
+  const generateerror = (err) => {
+    toast.error(err, {
+      position: 'top-center',
+    });
+  };
+
+  // reducer function it describe the logic for filling the formstate
+  const formreducer = (state, action) => {
+    switch (action.type) {
+      case 'handelinput':
+        return {
+          ...state,
+          [action.field]: action.payload,
+        };
+
+      default:
+        break;
+    }
+  };
+
+  // handel change function is used to fill the formstate using dispatch
+  const handelchange = (e) => {
+    dispatch({
+      type: 'handelinput',
+      field: e.target.name,
+      payload: e.target.value,
+    });
+  };
+
+  // handelsubmit is used to submit the form to backend
+  const handelsubmit = async () => {
+    console.log(formstate);
+    let emailValid = formstate.email.match(
+      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
+    );
+    console.log(emailValid);
+    dispatch({
+      type: 'handelinput',
+      field: 'emailer',
+      payload: !emailValid,
+    });
+    let passvalid = formstate.pass.length >= 4;
+    dispatch({
+      type: 'handelinput',
+      field: 'passer',
+      payload: !passvalid,
+    });
+    if (emailValid && passvalid) {
+      const { data } = await axios.post('/auth/login', formstate, {
+        withCredentials: true,
+      });
+      console.log(data);
+      if (data.status) {
+        // Userlogin is set to true
+        Dispatch(AuthActions.Userlogin(data.userdetails));
+
+        Navigate('/');
+      } else {
+        generateerror(data.msg);
+      }
+    }
+  };
+
+  // calling the usereducer hook return value from the usereducer hook is assigned to formstate and dispatch
+  const [formstate, dispatch] = useReducer(formreducer, initialstate);
   return (
-    <div>
-
-
-
-
-
-<section class="gradient-form h-full bg-neutral-200 dark:bg-neutral-700">
-  <div class="container h-full p-10">
-    <div
-      class="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
-      <div class="w-full">
-        <div
-          class="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
-          <div class="g-0 lg:flex lg:flex-wrap">
-            <div class="px-4 md:px-0 lg:w-6/12">
-              <div class="md:mx-6 md:p-12">
-                <div class="text-center">
-                  <img
-                    class="mx-auto w-48"
-                    src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                    alt="logo" />
-                  <h4 class="mt-1 mb-12 pb-1 text-xl font-semibold">
-                    We are The Lotus Team
-                  </h4>
-                </div>
-                <form>
-                  <p class="mb-4">Please login to your account</p>
-                  <div class="relative mb-4" data-te-input-wrapper-init>
+    <div className="main flex h-screen ">
+       <ToastContainer />
+      <div className=" lg:w-1/2 ml-0 h-full bg-socialblue w-full ">
+        <div className="heading flex items-center justify-center ">
+          <img
+            className=" mr-4 h-10 w-auto"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7OT_7ND-gEVZwvYx1--tEjdbrX6avwSJGTg&usqp=CAU"
+            alt="Your Company"
+          ></img>
+          <h1 class="text-5xl  font-bold leading-normal mt-0 mb-2 text-white ">
+            connect
+          </h1>
+        </div>
+        <div className="captions mb-4">
+          <h1 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
+            Hello ! Welcome back
+          </h1>
+          <p className="font-light text-white text-center mt-4 mb-16 text-2xl lg:block md:block hidden ">
+            Login in with Your data entered during your registration
+          </p>
+        </div>
+        <div className="lg:flex md:flex  lg:flex-col  md:flex-col align-middle justify-center items-center  hidden">
+          <div className="poster w-1/2">
+            <img
+              className=""
+              src="https://rurutek.com/jio/assets/img/login-animate.gif"
+            ></img>
+          </div>
+          <div></div>
+        </div>
+        <div className="flex justify-center px-4 py-12 sm:px-6 lg:hidden md:hidden ">
+          <div className="w-full  bg-white max-w-md space-y-8 shadow-sm shadow-white rounded-lg">
+            <div></div>
+            <form className="mt-8 space-y-6" action="#" method="POST">
+              <div className="-space-y-px rounded-md shadow-sm">
+                <div>
+                  <div className="mb-2 ml-4">
+                    <label className="font-medium ">Email address</label>
+                  </div>
+                  <div className="mb-2 p-4">
                     <input
+                      className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      placeholder="Enter the Name"
+                      value={formstate.email}
+                name="email"
+                onChange={(e) => handelchange(e)}
                       type="text"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                      id="exampleFormControlInput1"
-                      placeholder="Username" />
-                    <label
-                      for="exampleFormControlInput1"
-                      class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-blue-600 peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
-                      >Username
-                    </label>
+                    ></input>
+                     {formstate.emailer ? (
+                <label className="text-red-400">Invalid email</label>
+              ) : (
+                ''
+              )}
                   </div>
-                  <div class="relative mb-4" data-te-input-wrapper-init>
+                </div>
+                <div>
+                  <div className="mb-2 ml-4">
+                    <label className="font-medium ">password</label>
+                  </div>
+                  <div className="mb-2 p-4">
                     <input
+                      className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      placeholder="Enter the Password"
+                      name="pass"
                       type="password"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                      id="exampleFormControlInput11"
-                      placeholder="Password" />
-                    <label
-                      for="exampleFormControlInput11"
-                      class="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-blue-600 peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
-                      >Password
-                    </label>
+                      value={formstate.pass}
+                      onChange={(e) => handelchange(e)}
+                    ></input>
+                     {formstate.passer ? (
+                <label className="text-red-400">password is to short</label>
+              ) : (
+                ''
+              )}
                   </div>
-                  <div class="mb-12 pt-1 pb-1 text-center">
-                    <button
-                      class="mb-3 inline-block w-full rounded px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
-                      type="button"
-                      data-te-ripple-init
-                      data-te-ripple-color="light"
-                      style="
-                        background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
-                      ">
-                      Log in
-                    </button>
-                    <a href="#!">Forgot password?</a>
-                  </div>
-                  <div class="flex items-center justify-between pb-6">
-                    <p class="mb-0 mr-2">Don't have an account?</p>
-                    <button
-                      type="button"
-                      class="inline-block rounded border-2 border-danger px-6 pt-2 pb-[6px] text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                      data-te-ripple-init
-                      data-te-ripple-color="light">
-                      Register
-                    </button>
-                  </div>
-                </form>
+                </div>
               </div>
-            </div>
-            <div
-              class="flex items-center rounded-b-lg lg:w-6/12 lg:rounded-r-lg lg:rounded-bl-none"
-              style="background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)">
-              <div class="px-4 py-6 text-white md:mx-6 md:p-12">
-                <h4 class="mb-6 text-xl font-semibold">
-                  We are more than just a company
-                </h4>
-                <p class="text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing
-                  elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam, quis
-                  nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat.
-                </p>
+
+              <div class="flex items-center justify-between mr-4">
+                <div class="flex items-center"></div>
+
+                <div class="text-sm">
+                  <Link
+                    to={'/signup'}
+                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  >
+                    Create an account
+                  </Link>
+                </div>
               </div>
+
+              <div className="p-4">
+                <button
+                  type="button"
+                  onClick={handelsubmit}
+                  class="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Sign in
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div className="lg:right lg:w-1/2 lg:h-full lg:block md:block hidden  ">
+        <div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md space-y-8">
+            <div>
+              <img
+                className="mx-auto h-14 w-auto"
+                src="https://image.pngaaa.com/296/6917296-middle.png"
+                alt="Your Company"
+              ></img>
+              <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+                Sign in to your account
+              </h2>
+              <p className="mt-2 text-center text-sm text-gray-600"></p>
             </div>
+            <form className="mt-8 space-y-6" action="#" method="POST">
+              <div className="-space-y-px rounded-md shadow-sm">
+                <div>
+                  <div className="mb-2">
+                    <label className="font-medium ">Email address</label>
+                  </div>
+                  <div className="mb-2">
+                    <input
+                      className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      placeholder="Enter the Name"
+                      value={formstate.email}
+                name="email"
+                onChange={(e) => handelchange(e)}
+                      type="text"
+                    ></input>
+                     {formstate.emailer ? (
+                <label className="text-red-400">Invalid email</label>
+              ) : (
+                ''
+              )}
+                  </div>
+                </div>
+                <div>
+                  <div className="mb-2">
+                    <label className="font-medium ">password</label>
+                  </div>
+                  <div className="mb-2">
+                    <input
+                      className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      placeholder="Enter the Password"
+                      name="pass"
+                      type="password"
+                      value={formstate.pass}
+                      onChange={(e) => handelchange(e)}
+                     
+                    ></input>
+                     {formstate.passer ? (
+                <label className="text-red-400">password is to short</label>
+              ) : (
+                ''
+              )}
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div class="flex items-center"></div>
+
+                <div class="text-sm">
+                  <Link
+                    to={'/signup'}
+                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  >
+                    Create an account
+                  </Link>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="button"
+                  onClick={handelsubmit}
+                  class="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Sign in
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-
-
-
-
-
-
-
-
-
-      
-      
-    </div>
-  )
+  );
 }
 
-export default Verify
+export default Verify;

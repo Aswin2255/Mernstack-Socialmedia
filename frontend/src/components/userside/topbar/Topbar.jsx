@@ -47,10 +47,13 @@ function Topbar() {
     try {
       setsearchvalues(e.target.value);
       if (e.target.value !== '') {
-        const result = fetcheduser.filter(
-          (event) =>
-            event.name.includes(e.target.value) && event._id !== logedinuser._id
-        );
+        const result = fetcheduser
+          .filter(
+            (event) =>
+              event.name.includes(e.target.value) &&
+              event._id !== logedinuser._id
+          )
+          .slice(0, 5);
 
         setsearchresult(result);
       } else {
@@ -67,7 +70,7 @@ function Topbar() {
       <div className="topbar-container bg-socialblue">
         <div className="left">
           <img
-            src="https://flowbite.com/docs/images/logo.svg"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7OT_7ND-gEVZwvYx1--tEjdbrX6avwSJGTg&usqp=CAU"
             className="h-6 mr-3 sm:h-9"
             alt="Flowbite Logo"
           ></img>
@@ -104,7 +107,7 @@ function Topbar() {
                 />
               </div>
               <div
-                className="results fixed "
+                className={searchresult.length ? "results fixed overflow-y-scroll bg-white " : 'results'}
                 style={{ width: '34%', marginLeft: '-2rem' }}
               >
                 {searchresult ? (

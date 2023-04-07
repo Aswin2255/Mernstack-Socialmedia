@@ -81,7 +81,7 @@ function Friendlist({ show, close, userid }) {
               </>
             ) : (
               <>
-                <div className="relative p-6  m-3 overflow-y-scroll">
+                <div className="relative p-6  m-3 overflow-y-scroll h-52">
                   {followers.map((e) => {
                     return (
                       <div className="flex justify-between">

@@ -47,16 +47,18 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+//app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: ["https://www.connectiflix.site","https://connectiflix.site"]}));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 const httpserver = http.createServer(app);
 const io = new Server(httpserver, {
   cors: {
-    origin: ["http://localhost:3000"],
+    //origin: ["http://localhost:3000"],
+    origin:["https://www.connectiflix.site","https://connectiflix.site"]
   },
 });
-console.log('.......')
+
 
 let users = [];
 const adduser = (userid, socketid) => {
