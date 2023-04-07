@@ -33,9 +33,9 @@ function Chat() {
   const [loading,setloading] = useState(true)
   const dispatch = useDispatch()
   useEffect(() => {
-    //socketconect.current = io('ws://localhost:3001');
+    socketconect.current = io('ws://localhost:3001');
     // for production
-    socketconect.current = io('wss://www.connectiflix.site');
+    //socketconect.current = io('wss://www.connectiflix.site');
   }, []);
   useEffect(() => {
     socketconect.current.on('getmessage', (data) => {

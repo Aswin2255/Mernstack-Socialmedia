@@ -52,7 +52,7 @@ function Loging() {
   const handelsubmit = async () => {
     console.log(formstate);
     let emailValid = formstate.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     );
     console.log(emailValid);
     dispatch({
