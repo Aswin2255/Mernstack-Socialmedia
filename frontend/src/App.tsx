@@ -1,7 +1,7 @@
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Routing from './components/userside/Routing';
+import Routing from './components/common/Routing';
 
 function App() {
   return (

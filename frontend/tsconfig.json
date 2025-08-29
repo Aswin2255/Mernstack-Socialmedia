@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    // Layout
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    // Module system (Vite expects ESNext)
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Node",
+
+    // React / JSX
+    "jsx": "react-jsx",
+
+    // Type Checking
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Compatibility
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+
+    // Emit
+    "sourceMap": true,
+    "declaration": false,         // disable for frontend (keeps build fast)
+    "declarationMap": false,      // same
+
+    // Extra
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
+
