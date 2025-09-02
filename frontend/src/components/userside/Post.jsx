@@ -232,7 +232,7 @@ function Post({ profile, saved }) {
     const { data } = await axios.patch(
       `post/comment/${id}`,
       { newcoment, username, propicpath },
-      { withCredentials: true }
+      { withCredentials: true },
     );
     if (profile) {
       let userpost = data.updatedpost.filter((e) => e.userid === profile);
@@ -288,16 +288,11 @@ function Post({ profile, saved }) {
                         {e.name}{' '}
                       </Link>
                       shared a{' '}
-                      <Link
-                        to={`/profile/${e.userid}`}
-                        className="text-socialblue"
-                      >
+                      <Link to={`/profile/${e.userid}`} className="text-socialblue">
                         Post
                       </Link>
                     </p>
-                    <p className="text-gray-500 text-sm m-1 ">
-                      {format(e.createdAt)}
-                    </p>
+                    <p className="text-gray-500 text-sm m-1 ">{format(e.createdAt)}</p>
                     {e.taggeduser.length ? (
                       <div className="flex">
                         <svg
@@ -321,10 +316,7 @@ function Post({ profile, saved }) {
                         </svg>
                         {e.taggeduser.map((e) => {
                           return (
-                            <Link
-                              to={`/profile/${e._id}`}
-                              className="text-socialblue text-sm m-2"
-                            >
+                            <Link to={`/profile/${e._id}`} className="text-socialblue text-sm m-2">
                               {e.name}
                             </Link>
                           );
@@ -508,9 +500,7 @@ function Post({ profile, saved }) {
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      fill={
-                        e.likes[userid] || likestate[userid] ? 'red' : 'none'
-                      }
+                      fill={e.likes[userid] || likestate[userid] ? 'red' : 'none'}
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
@@ -524,10 +514,7 @@ function Post({ profile, saved }) {
                     </svg>
                     {Object.keys(e.likes).length}
                   </button>
-                  <button
-                    onClick={() => showc(e._id)}
-                    className="flex gap-2 items-center"
-                  >
+                  <button onClick={() => showc(e._id)} className="flex gap-2 items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -557,12 +544,7 @@ function Post({ profile, saved }) {
                           onSubmit={(event) => {
                             event.preventDefault();
                             if (event.target[0].value) {
-                              postcomment(
-                                event.target[0].value,
-                                e._id,
-                                Username,
-                                propicpath
-                              );
+                              postcomment(event.target[0].value, e._id, Username, propicpath);
                             }
                           }}
                         >
@@ -570,10 +552,7 @@ function Post({ profile, saved }) {
                             className=" block w-full p-3 overflow-hidden px-4 h-12 "
                             placeholder="Leave a comment."
                           ></textarea>
-                          <button
-                            type="submit"
-                            className="absolute right-3 top-3 text-gray-400 "
-                          >
+                          <button type="submit" className="absolute right-3 top-3 text-gray-400 ">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -710,16 +689,11 @@ function Post({ profile, saved }) {
                           {e.name}{' '}
                         </Link>
                         shared a{' '}
-                        <Link
-                          to={`/profile/${e.userid}`}
-                          className="text-socialblue"
-                        >
+                        <Link to={`/profile/${e.userid}`} className="text-socialblue">
                           Post
                         </Link>
                       </p>
-                      <p className="text-gray-500 text-sm m-1 ">
-                        {format(e.createdAt)}
-                      </p>
+                      <p className="text-gray-500 text-sm m-1 ">{format(e.createdAt)}</p>
 
                       {e.taggeduser.length ? (
                         <div className="flex">
@@ -916,10 +890,7 @@ function Post({ profile, saved }) {
 
                     <div className="rounded-md overflow-hidden">
                       {e.picturepath ? (
-                        <img
-                          src={`/assets/${e.picturepath}`}
-                          alt="postimg"
-                        ></img>
+                        <img src={`/assets/${e.picturepath}`} alt="postimg"></img>
                       ) : (
                         ''
                       )}
@@ -946,10 +917,7 @@ function Post({ profile, saved }) {
                       </svg>
                       {Object.keys(e.likes).length}
                     </button>
-                    <button
-                      onClick={() => showc(e._id)}
-                      className="flex gap-2 items-center"
-                    >
+                    <button onClick={() => showc(e._id)} className="flex gap-2 items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -979,12 +947,7 @@ function Post({ profile, saved }) {
                             onSubmit={(event) => {
                               event.preventDefault();
                               if (event.target[0].value) {
-                                postcomment(
-                                  event.target[0].value,
-                                  e._id,
-                                  Username,
-                                  propicpath
-                                );
+                                postcomment(event.target[0].value, e._id, Username, propicpath);
                               }
                             }}
                           >
@@ -992,10 +955,7 @@ function Post({ profile, saved }) {
                               className=" block w-full p-3 overflow-hidden px-4 h-12 "
                               placeholder="Leave a comment."
                             ></textarea>
-                            <button
-                              type="submit"
-                              className="absolute right-3 top-3 text-gray-400 "
-                            >
+                            <button type="submit" className="absolute right-3 top-3 text-gray-400 ">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -1032,9 +992,7 @@ function Post({ profile, saved }) {
                                         </Link>
                                         <div className="flex-col mt-1">
                                           <div className="flex items-center flex-1 px-4 font-bold leading-tight">
-                                            <Link
-                                              to={`/profile/${data.userid}`}
-                                            >
+                                            <Link to={`/profile/${data.userid}`}>
                                               <p className="font-semibold cursor-pointer hover:underline">
                                                 {data.username}
                                               </p>
@@ -1137,16 +1095,11 @@ function Post({ profile, saved }) {
                         {e.name}{' '}
                       </Link>
                       shared a{' '}
-                      <Link
-                        to={`/profile/${e.userid}`}
-                        className="text-socialblue"
-                      >
+                      <Link to={`/profile/${e.userid}`} className="text-socialblue">
                         Post
                       </Link>
                     </p>
-                    <p className="text-gray-500 text-sm m-1 ">
-                      {format(e.createdAt)}
-                    </p>
+                    <p className="text-gray-500 text-sm m-1 ">{format(e.createdAt)}</p>
                     {e.taggeduser.length ? (
                       <div className="flex">
                         <svg
@@ -1170,10 +1123,7 @@ function Post({ profile, saved }) {
                         </svg>
                         {e.taggeduser.map((e) => {
                           return (
-                            <Link
-                              to={`/profile/${e._id}`}
-                              className="text-socialblue text-sm m-2"
-                            >
+                            <Link to={`/profile/${e._id}`} className="text-socialblue text-sm m-2">
                               {e.name}
                             </Link>
                           );
@@ -1369,10 +1319,7 @@ function Post({ profile, saved }) {
                     </svg>
                     {Object.keys(e.likes).length}
                   </button>
-                  <button
-                    onClick={() => showc(e._id)}
-                    className="flex gap-2 items-center"
-                  >
+                  <button onClick={() => showc(e._id)} className="flex gap-2 items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -1402,12 +1349,7 @@ function Post({ profile, saved }) {
                           onSubmit={(event) => {
                             event.preventDefault();
                             if (event.target[0].value) {
-                              postcomment(
-                                event.target[0].value,
-                                e._id,
-                                Username,
-                                propicpath
-                              );
+                              postcomment(event.target[0].value, e._id, Username, propicpath);
                             }
                           }}
                         >
@@ -1415,10 +1357,7 @@ function Post({ profile, saved }) {
                             className=" block w-full p-3 overflow-hidden px-4 h-12 "
                             placeholder="Leave a comment."
                           ></textarea>
-                          <button
-                            type="submit"
-                            className="absolute right-3 top-3 text-gray-400 "
-                          >
+                          <button type="submit" className="absolute right-3 top-3 text-gray-400 ">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -1548,11 +1487,7 @@ function Post({ profile, saved }) {
         ''
       )}
       {delmsg ? <Confirmmodal showmodal={setdelmsg} postid={delpostid} /> : ''}
-      {reportmodal ? (
-        <Reportmodal showmodal={setreportmodal} postid={reportid} />
-      ) : (
-        ''
-      )}
+      {reportmodal ? <Reportmodal showmodal={setreportmodal} postid={reportid} /> : ''}
 
       <Postcomponet />
     </div>

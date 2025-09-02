@@ -20,9 +20,7 @@ function Confirmmodal({ showmodal, postid }) {
         withCredentials: true,
       });
       if (data.status) {
-        let userupdatedpost = data.updatedpost.filter(
-          (e) => e.userid === userid
-        );
+        let userupdatedpost = data.updatedpost.filter((e) => e.userid === userid);
         dispatch(postaction.Getallpost(data.updatedpost));
         dispatch(postaction.Getuserpost(userupdatedpost));
         generatesucess('post deleted');

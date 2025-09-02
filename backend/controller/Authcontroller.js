@@ -16,30 +16,33 @@ const CreateToken = (id) => {
 /* register user */
 
 export const register = async (req, res, next) => {
-  console.log(req.body);
+
+  
   try {
-    const { name, email, phone, pass } = req.body;
+    const { Username, Email, Phone, Password, ConfirmPassword } = req.body;
+
 
     const salt = await bcrypt.genSalt();
-    const passwordhash = await bcrypt.hash(pass, salt);
+    const passwordhash = await bcrypt.hash(Password, salt);
 
     // generate the otp
-     const otp = await SendOtp();
+     //const otp = await SendOtp();
    
 
     const newuser = new user({
-      name,
-      email,
-      phone,
+      name: Username,
+      email: Email,
+      phone: Phone,
       pass: passwordhash,
-       verified: false,
-      otp,
+       verified: true,
+      //otp,
       
     });
     const saveduser = await newuser.save();
-    console.log(saveduser);
+    //console.log(saveduser);
     const token = CreateToken(saveduser._id);
 
+    /*
     // generate the verification email
      let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -59,6 +62,7 @@ export const register = async (req, res, next) => {
       subject: "verification email", // Subject line
       text: ` welcome to connect  your OTP for registration is : ${otp}`, // plain text body
     });
+    */
 
     res.cookie("jwt", token, {
       withCredentials: true,

@@ -30,8 +30,8 @@ function Chat() {
   const [arrivalmsg, setarrivalmsg] = useState();
   const scrollref = useRef(null);
   const socketconect = useRef();
-  const [loading,setloading] = useState(true)
-  const dispatch = useDispatch()
+  const [loading, setloading] = useState(true);
+  const dispatch = useDispatch();
   useEffect(() => {
     //socketconect.current = io('ws://localhost:3001');
     // for production
@@ -61,10 +61,10 @@ function Chat() {
         });
         console.log(data.userchat);
         setconversation(data.userchat);
-        setloading(false)
+        setloading(false);
       } catch (error) {
         console.log(error.message);
-        dispatch(AuthActions.UserLogout())
+        dispatch(AuthActions.UserLogout());
       }
     };
     getconversation();
@@ -74,10 +74,9 @@ function Chat() {
     const getmessages = async () => {
       try {
         console.log('worked');
-        const { data } = await axios.get(
-          `/message/getmessage/${currentchat?._id}`,
-          { withCredentials: true }
-        );
+        const { data } = await axios.get(`/message/getmessage/${currentchat?._id}`, {
+          withCredentials: true,
+        });
 
         setchatmessage(data.message);
       } catch (error) {
@@ -124,9 +123,7 @@ function Chat() {
           chatid: currentchat._id,
           text: message,
         };
-        const receiverid = currentchat.members.find(
-          (member) => member !== logedinuserid
-        );
+        const receiverid = currentchat.members.find((member) => member !== logedinuserid);
         socketconect.current.emit('sendmessage', {
           senderid: logedinuserid,
           receiverid,
@@ -146,9 +143,7 @@ function Chat() {
 
   const handelchange = (e) => {
     setmessage(e.target.value);
-    const receiverid = currentchat.members.find(
-      (member) => member !== logedinuserid
-    );
+    const receiverid = currentchat.members.find((member) => member !== logedinuserid);
     const typingobj = {
       chatid: currentchat._id,
       receiverid,
@@ -159,7 +154,7 @@ function Chat() {
     settypingtime(
       setTimeout(() => {
         socketconect.current.emit('stoptyping', typingobj);
-      }, 1000)
+      }, 1000),
     );
   };
 
@@ -175,33 +170,32 @@ function Chat() {
           <div className="chathistory">
             <Chatsearch currentchat={setcurrentchat} />
             <div className="conversations overflow-y-scroll overflow-x-hidden">
-             {
-              loading ? <ColorRing
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="blocks-loading"
-              wrapperStyle={{}}
-              wrapperClass="blocks-wrapper"
-              colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-            /> : <>
-               {conversattion.map((e) => (
-                <div className="items" onClick={() => setcurrentchat(e)}>
-                  <Chathistory conversation={e} currentuser={logedinuserid} />
-                </div>
-              ))}
-              </>
-             }
+              {loading ? (
+                <ColorRing
+                  visible={true}
+                  height="80"
+                  width="80"
+                  ariaLabel="blocks-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="blocks-wrapper"
+                  colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                />
+              ) : (
+                <>
+                  {conversattion.map((e) => (
+                    <div className="items" onClick={() => setcurrentchat(e)}>
+                      <Chathistory conversation={e} currentuser={logedinuserid} />
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </div>
           <div className="showchat">
             {currentchat ? (
               <>
                 <div className="topbar bg-socialblue">
-                  <Chattopbar
-                    conversation={currentchat}
-                    currentuser={logedinuserid}
-                  />
+                  <Chattopbar conversation={currentchat} currentuser={logedinuserid} />
                   <div className="float-right">
                     {typing ? (
                       <>
@@ -270,7 +264,7 @@ function Chat() {
                   }}
                 >
                   <div>
-                    <h1 className='text-sm font-medium text-gray-400'> no chat are selected</h1>
+                    <h1 className="text-sm font-medium text-gray-400"> no chat are selected</h1>
                   </div>
                 </div>
               </>

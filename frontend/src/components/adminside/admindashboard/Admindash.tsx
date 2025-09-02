@@ -32,9 +32,7 @@ function Admindash() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-heading">
-        <h1 className="text-6xl mb-4  text-gray-400  text-center justify-center m-5">
-          Dashboard
-        </h1>
+        <h1 className="text-6xl mb-4  text-gray-400  text-center justify-center m-5">Dashboard</h1>
       </div>
       <div className="dashboard-card m-5">
         <div className="container mx-auto px-20">
@@ -57,9 +55,9 @@ function Admindash() {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                       ></path>
                     </svg>
@@ -86,9 +84,9 @@ function Admindash() {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                       ></path>
                     </svg>

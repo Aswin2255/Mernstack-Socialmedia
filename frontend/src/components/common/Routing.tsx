@@ -2,19 +2,15 @@ import { useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import React, { lazy, Suspense } from 'react';
 const Loging = lazy(() => import('../../pages/userside/LoginPage'));
-import Signup from '../../pages/userside/Signup';
+import Signup from '../../pages/userside/SignupPage';
 import Adminlogin from '../../pages/adminside/Adminlogin';
 import Adminprivate from '../adminside/Adminprivate';
 import Userprivate from '../protectedauth/Userprotected';
 import { RootState } from '../../store/Store';
 
 function Routing() {
-  let UserLogedin = useSelector(
-    (state: RootState) => state.auth.Userisloggedin
-  );
-  let Adminlogedin = useSelector(
-    (state: RootState) => state.auth.Adminisloggedin
-  );
+  let UserLogedin = useSelector((state: RootState) => state.auth.Userisloggedin);
+  let Adminlogedin = useSelector((state: RootState) => state.auth.Adminisloggedin);
   return (
     <div>
       <BrowserRouter>
@@ -72,13 +68,7 @@ function Routing() {
           ></Route>
           <Route
             path="/admin/adminlogin"
-            element={
-              !Adminlogedin ? (
-                <Adminlogin />
-              ) : (
-                <Navigate replace to="/admin/dashboard" />
-              )
-            }
+            element={!Adminlogedin ? <Adminlogin /> : <Navigate replace to="/admin/dashboard" />}
           ></Route>
         </Routes>
       </BrowserRouter>

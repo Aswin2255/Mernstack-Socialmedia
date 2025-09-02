@@ -12,7 +12,7 @@ function Usertable() {
       const { data } = await await axios.patch(
         `/admin/changestatus/${id}`,
         { status },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       if (data.status) {
         dispatch(Useraction.Getalluser(data.userdata));
@@ -71,25 +71,21 @@ function Usertable() {
               {userdata.map((e) => {
                 return (
                   <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                       <th
                         scope="row"
-                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
                         {e.name}
                       </th>
                       <td className="px-6 py-4">{e.email}</td>
                       <td className="px-6 py-4">{e.phone}</td>
                       <td
-                        className={
-                          e.status
-                            ? 'px-6 py-4 text-green-600'
-                            : 'px-6 py-4 text-red-700'
-                        }
+                        className={e.status ? 'px-6 py-4 text-green-600' : 'px-6 py-4 text-red-700'}
                       >
                         {e.status ? 'active' : 'block'}
                       </td>
-                      <td class="px-6 py-4">
+                      <td className="px-6 py-4">
                         <label className="inline-flex relative items-center mr-5 cursor-pointer">
                           <input
                             type="checkbox"

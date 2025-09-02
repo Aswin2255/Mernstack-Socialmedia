@@ -38,9 +38,7 @@ function Lnew() {
   };
   //  handelsubmit is used to trigger submitting action
   const handelsubmit = async () => {
-    let emailValid = formstate.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-    );
+    let emailValid = formstate.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
     console.log(emailValid);
     dispatch({
       type: 'handelinput',
@@ -56,7 +54,7 @@ function Lnew() {
       payload: !usernamevalid,
     });
     let phonevalid = formstate.phone.match(/^[789]\d{9}$/);
-    console.log(phonevalid)
+    console.log(phonevalid);
     dispatch({
       type: 'handelinput',
       field: 'phoneer',
@@ -76,17 +74,15 @@ function Lnew() {
     });
     if (emailValid && passvalid && passmatch && usernamevalid) {
       setloader(true);
-      await axios
-        .post('/auth/register', formstate, { withCredentials: true })
-        .then((response) => {
-          if (response.data.status) {
-            setloader(false);
-            Usedispatch(AuthActions.Userlogin(response.data.userdetails));
-          } else {
-            setloader(false);
-            generateerror('email/phone already register');
-          }
-        });
+      await axios.post('/auth/register', formstate, { withCredentials: true }).then((response) => {
+        if (response.data.status) {
+          setloader(false);
+          Usedispatch(AuthActions.Userlogin(response.data.userdetails));
+        } else {
+          setloader(false);
+          generateerror('email/phone already register');
+        }
+      });
     }
   };
   // it is the function used to manage the state it describe how to fill the the form state
@@ -107,8 +103,11 @@ function Lnew() {
   console.log(formstate);
   return (
     <div className="main flex h-screen">
-       <ToastContainer/>
-      <div className="leftside bg-socialblue w-2/6 hidden  md:flex lg:flex" style={{ marginLeft: 0 }}>
+      <ToastContainer />
+      <div
+        className="leftside bg-socialblue w-2/6 hidden  md:flex lg:flex"
+        style={{ marginLeft: 0 }}
+      >
         <div className="heading  items-center justify-center align-middle ml-1  ">
           <div className="brand flex items-center justify-center">
             <img
@@ -116,9 +115,7 @@ function Lnew() {
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7OT_7ND-gEVZwvYx1--tEjdbrX6avwSJGTg&usqp=CAU"
               alt="Your Company"
             ></img>
-            <h1 class="text-5xl  font-bold leading-normal mt-0 mb-2 text-white ">
-              connect
-            </h1>
+            <h1 className="text-5xl  font-bold leading-normal mt-0 mb-2 text-white ">connect</h1>
           </div>
           <div className="captions mb-4">
             <h1 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
@@ -130,29 +127,24 @@ function Lnew() {
           </div>
           <div className="lg:flex md:flex  lg:flex-col  md:flex-col align-middle justify-center items-center  hidden">
             <div className="poster w-1/2">
-              <img
-                className=""
-                src="https://rurutek.com/jio/assets/img/login-animate.gif"
-              ></img>
+              <img className="" src="https://rurutek.com/jio/assets/img/login-animate.gif"></img>
             </div>
             <div></div>
           </div>
         </div>
       </div>
       <div className="rightside w-full lg:w-4/6 md:w-4/5 ">
-        <section class="bg-gray-50 ">
-          <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div class="w-full  rounded-lg  md:mt-0 sm:max-w-md xl:p-0">
-            <div className="brand flex lg:hidden md:hidden items-center justify-center">
-            <img
-              className=" mr-4 h-10 w-auto"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7OT_7ND-gEVZwvYx1--tEjdbrX6avwSJGTg&usqp=CAU"
-              alt="Your Company"
-            ></img>
-            <h1 class="text-5xl  font-bold leading-normal mt-0 mb-2 text-black ">
-              connect
-            </h1>
-          </div>
+        <section className="bg-gray-50 ">
+          <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <div className="w-full  rounded-lg  md:mt-0 sm:max-w-md xl:p-0">
+              <div className="brand flex lg:hidden md:hidden items-center justify-center">
+                <img
+                  className=" mr-4 h-10 w-auto"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7OT_7ND-gEVZwvYx1--tEjdbrX6avwSJGTg&usqp=CAU"
+                  alt="Your Company"
+                ></img>
+                <h1 className="text-5xl  font-bold leading-normal mt-0 mb-2 text-black ">connect</h1>
+              </div>
               <div>
                 <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
                   Sign in to your account
@@ -169,17 +161,17 @@ function Lnew() {
                       <input
                         className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                         value={formstate.name}
-                  placeholder="Enter the Name"
-                  name="name"
-                  onChange={(e) => {
-                    handelchange(e);
-                  }}
+                        placeholder="Enter the Name"
+                        name="name"
+                        onChange={(e) => {
+                          handelchange(e);
+                        }}
                       ></input>
-                   {formstate.nameer ? (
-                  <label className="text-red-400">Invalid username</label>
-                ) : (
-                  ''
-                )}
+                      {formstate.nameer ? (
+                        <label className="text-red-400">Invalid username</label>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
                   <div>
@@ -197,10 +189,10 @@ function Lnew() {
                         }}
                       ></input>
                       {formstate.emailer ? (
-                  <label className="text-red-400">Invalid email</label>
-                ) : (
-                  ''
-                )}
+                        <label className="text-red-400">Invalid email</label>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
                   <div>
@@ -211,18 +203,18 @@ function Lnew() {
                       <input
                         className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                         value={formstate.pass}
-                  placeholder="Enter the password"
-                  name="pass"
-                  onChange={(e) => {
-                    handelchange(e);
-                  }}
-                  type="password"
+                        placeholder="Enter the password"
+                        name="pass"
+                        onChange={(e) => {
+                          handelchange(e);
+                        }}
+                        type="password"
                       ></input>
                       {formstate.passer ? (
-                  <label className="text-red-400">Invalid password</label>
-                ) : (
-                  ''
-                )}
+                        <label className="text-red-400">Invalid password</label>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
                   <div>
@@ -241,18 +233,18 @@ function Lnew() {
                         type="password"
                       ></input>
                       {formstate.cpasser ? (
-                  <label className="text-red-700">Password not matched</label>
-                ) : (
-                  ''
-                )}
+                        <label className="text-red-700">Password not matched</label>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
                 </div>
 
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center"></div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center"></div>
 
-                  <div class="text-sm">
+                  <div className="text-sm">
                     <Link
                       to={'/login'}
                       className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -266,7 +258,7 @@ function Lnew() {
                   <button
                     type="button"
                     onClick={handelsubmit}
-                    class="group relative flex w-full justify-center rounded-md bg-socialblue px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="group relative flex w-full justify-center rounded-md bg-socialblue px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Sign up
                   </button>
