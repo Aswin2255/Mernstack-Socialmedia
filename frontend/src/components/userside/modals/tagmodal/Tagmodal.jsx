@@ -85,11 +85,7 @@ function Tagmodal({ modal, tagdata }) {
                       strokeLinejoin="round"
                       d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
                     />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 6h.008v.008H6V6z"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
                   </svg>{' '}
                   Tag people
                 </p>
@@ -106,11 +102,7 @@ function Tagmodal({ modal, tagdata }) {
                     stroke="currentColor"
                     className="w-6 h-6"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
@@ -142,16 +134,8 @@ function Tagmodal({ modal, tagdata }) {
                               onChange={(e) => {
                                 handelchange(e, user.name);
                               }}
-                              checked={
-                                taged.tageduser.includes(user._id)
-                                  ? true
-                                  : false
-                              }
-                              disabled={
-                                taged.tageduser.includes(user._id)
-                                  ? false
-                                  : tagdisabel
-                              }
+                              checked={taged.tageduser.includes(user._id) ? true : false}
+                              disabled={taged.tageduser.includes(user._id) ? false : tagdisabel}
                               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             ></input>
                           </div>

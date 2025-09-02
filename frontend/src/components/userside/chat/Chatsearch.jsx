@@ -26,9 +26,8 @@ function Chatsearch({ currentchat }) {
       setsearch(e.target.value);
       if (e.target.value !== '') {
         const result = fetcheduser.filter(
-          (event) =>
-            event.name.includes(e.target.value) && event._id !== logedinuser
-        )
+          (event) => event.name.includes(e.target.value) && event._id !== logedinuser,
+        );
 
         setsearchresult(result);
       } else {
@@ -92,9 +91,8 @@ function Chatsearch({ currentchat }) {
           </div>
         </form>
         {searchresult.length ? (
-            <>
-        <div className="results fixed bg-gray-100 md:w-4/12 sm:w-4/5 sm:h-38 overflow-y-scroll ">
-         
+          <>
+            <div className="results fixed bg-gray-100 md:w-4/12 sm:w-4/5 sm:h-38 overflow-y-scroll ">
               {searchresult.map((e) => {
                 return (
                   <div
@@ -110,12 +108,11 @@ function Chatsearch({ currentchat }) {
                   </div>
                 );
               })}
-               </div>
-            </>
-          ) : (
-            ''
-          )}
-       
+            </div>
+          </>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );

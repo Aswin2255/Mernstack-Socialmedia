@@ -15,7 +15,7 @@ function Notification() {
     const { data } = await axios.patch(
       `/user/updatenotifications/${logeduser}`,
       {},
-      { withCredentials: true }
+      { withCredentials: true },
     );
     setnotifications(data.notifications);
   };
@@ -29,7 +29,7 @@ function Notification() {
         <h1 className="text-3xl mb-4 text-gray-400">Notifications</h1>
 
         <Cards nopading={true}>
-          <div >
+          <div>
             {notifications?.map((e) => {
               return (
                 <>

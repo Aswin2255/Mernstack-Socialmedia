@@ -9,7 +9,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const Postslice = createSlice({
   name: 'post',
-  initialState: { allpost: [], userpost: [],postcount:0 ,loading: false },
+  initialState: { allpost: [], userpost: [], postcount: 0, loading: false },
   reducers: {
     Addnewpost(state, action) {
       state.allpost = action.payload;
@@ -23,9 +23,9 @@ const Postslice = createSlice({
     Getuserpost(state, action) {
       state.userpost = action.payload;
     },
-    Getpostcount(state,action){
-      state.postcount = action.payload
-    }
+    Getpostcount(state, action) {
+      state.postcount = action.payload;
+    },
   },
   /*  extraReducers:(builder)=>{
         builder.addCase(FetchAllpost.pending,(state)=>{

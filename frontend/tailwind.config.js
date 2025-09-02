@@ -6,7 +6,12 @@ export default {
   ],
   darkMode : "class",
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        // custom project color used as "bg-socialblue"
+        socialblue: "#2563EB", // adjust hex to your brand color
+      },
+    },
   },
   plugins: [],
   

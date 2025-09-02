@@ -34,12 +34,12 @@ function Propicmodal({ modal }) {
           '/user/changeprofile',
           formdata,
           { headers: { 'content-type': 'multipart/form-data' } },
-          { withCredentials: true }
+          { withCredentials: true },
         );
         if (data.status) {
           dispatch(AuthActions.Userupdate(data.updateduser));
           modal(false);
-          generatesucess('profilepicture updated')
+          generatesucess('profilepicture updated');
         } else {
           alert('unexpected error ocuured');
           dispatch(AuthActions.UserLogout());
@@ -55,7 +55,7 @@ function Propicmodal({ modal }) {
   return (
     <div>
       <>
-      <ToastContainer/>
+        <ToastContainer />
         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
           <div className="relative w-auto my-6 mx-auto max-w-3xl">
             {/*content*/}
@@ -90,11 +90,7 @@ function Propicmodal({ modal }) {
                     stroke="currentColor"
                     className="w-6 h-6"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
@@ -171,9 +167,9 @@ function Propicmodal({ modal }) {
                   </button>
                   <button
                     onClick={submithandel}
-                    disabled={image  ? false : true}
+                    disabled={image ? false : true}
                     className={
-                      image 
+                      image
                         ? 'bg-socialblue text-white  md:px-6 py-1 rounded-md '
                         : 'bg-blue-400  text-white  md:px-6 py-1 rounded-md opacity-50 '
                     }

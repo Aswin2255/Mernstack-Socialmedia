@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
 function Userprivate() {
-  let Logedin = useSelector((state : any) => state?.auth.userdetails);
+  let Logedin = useSelector((state: any) => state?.auth.userdetails);
   console.log(Logedin);
 
   return (
@@ -11,7 +11,7 @@ function Userprivate() {
     Logedin?.verified === true ? (
       <Outlet />
     ) : Logedin?.verified === false ? (
-       <Outlet />
+      <Outlet />
     ) : (
       <Navigate to={'/login'}></Navigate>
     )

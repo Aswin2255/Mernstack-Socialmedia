@@ -7,7 +7,7 @@ import { AuthActions } from '../../store/Authslice';
 function Verify() {
   const Dispatch = useDispatch();
   const Navigate = useNavigate();
-  
+
   // initial state represent the initial state of the form
   const initialstate = {
     email: '',
@@ -48,9 +48,7 @@ function Verify() {
   // handelsubmit is used to submit the form to backend
   const handelsubmit = async () => {
     console.log(formstate);
-    let emailValid = formstate.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-    );
+    let emailValid = formstate.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
     console.log(emailValid);
     dispatch({
       type: 'handelinput',
@@ -83,7 +81,7 @@ function Verify() {
   const [formstate, dispatch] = useReducer(formreducer, initialstate);
   return (
     <div className="main flex h-screen ">
-       <ToastContainer />
+      <ToastContainer />
       <div className=" lg:w-1/2 ml-0 h-full bg-socialblue w-full ">
         <div className="heading flex items-center justify-center ">
           <img
@@ -91,9 +89,7 @@ function Verify() {
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7OT_7ND-gEVZwvYx1--tEjdbrX6avwSJGTg&usqp=CAU"
             alt="Your Company"
           ></img>
-          <h1 class="text-5xl  font-bold leading-normal mt-0 mb-2 text-white ">
-            connect
-          </h1>
+          <h1 className="text-5xl  font-bold leading-normal mt-0 mb-2 text-white ">connect</h1>
         </div>
         <div className="captions mb-4">
           <h1 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
@@ -105,10 +101,7 @@ function Verify() {
         </div>
         <div className="lg:flex md:flex  lg:flex-col  md:flex-col align-middle justify-center items-center  hidden">
           <div className="poster w-1/2">
-            <img
-              className=""
-              src="https://rurutek.com/jio/assets/img/login-animate.gif"
-            ></img>
+            <img className="" src="https://rurutek.com/jio/assets/img/login-animate.gif"></img>
           </div>
           <div></div>
         </div>
@@ -126,15 +119,11 @@ function Verify() {
                       className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       placeholder="Enter the Name"
                       value={formstate.email}
-                name="email"
-                onChange={(e) => handelchange(e)}
+                      name="email"
+                      onChange={(e) => handelchange(e)}
                       type="text"
                     ></input>
-                     {formstate.emailer ? (
-                <label className="text-red-400">Invalid email</label>
-              ) : (
-                ''
-              )}
+                    {formstate.emailer ? <label className="text-red-400">Invalid email</label> : ''}
                   </div>
                 </div>
                 <div>
@@ -150,19 +139,19 @@ function Verify() {
                       value={formstate.pass}
                       onChange={(e) => handelchange(e)}
                     ></input>
-                     {formstate.passer ? (
-                <label className="text-red-400">password is to short</label>
-              ) : (
-                ''
-              )}
+                    {formstate.passer ? (
+                      <label className="text-red-400">password is to short</label>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>
               </div>
 
-              <div class="flex items-center justify-between mr-4">
-                <div class="flex items-center"></div>
+              <div className="flex items-center justify-between mr-4">
+                <div className="flex items-center"></div>
 
-                <div class="text-sm">
+                <div className="text-sm">
                   <Link
                     to={'/signup'}
                     className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -176,7 +165,7 @@ function Verify() {
                 <button
                   type="button"
                   onClick={handelsubmit}
-                  class="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Sign in
                 </button>
@@ -210,15 +199,11 @@ function Verify() {
                       className="block w-full p-2.5 mb-2  text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                       placeholder="Enter the Name"
                       value={formstate.email}
-                name="email"
-                onChange={(e) => handelchange(e)}
+                      name="email"
+                      onChange={(e) => handelchange(e)}
                       type="text"
                     ></input>
-                     {formstate.emailer ? (
-                <label className="text-red-400">Invalid email</label>
-              ) : (
-                ''
-              )}
+                    {formstate.emailer ? <label className="text-red-400">Invalid email</label> : ''}
                   </div>
                 </div>
                 <div>
@@ -233,21 +218,20 @@ function Verify() {
                       type="password"
                       value={formstate.pass}
                       onChange={(e) => handelchange(e)}
-                     
                     ></input>
-                     {formstate.passer ? (
-                <label className="text-red-400">password is to short</label>
-              ) : (
-                ''
-              )}
+                    {formstate.passer ? (
+                      <label className="text-red-400">password is to short</label>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>
               </div>
 
-              <div class="flex items-center justify-between">
-                <div class="flex items-center"></div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center"></div>
 
-                <div class="text-sm">
+                <div className="text-sm">
                   <Link
                     to={'/signup'}
                     className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -261,7 +245,7 @@ function Verify() {
                 <button
                   type="button"
                   onClick={handelsubmit}
-                  class="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Sign in
                 </button>

@@ -14,7 +14,7 @@ function Userdetails() {
   const { id } = useParams();
   const logedinuserid = useSelector((state) => state.auth.userdetails._id);
   const [showfmodal, setfmodal] = useState(false);
-  
+
   const showfollowers = (value) => {
     if (Object.keys(User[0].followers).length) {
       setfmodal(value);
@@ -31,7 +31,7 @@ function Userdetails() {
       const { data } = await await axios.patch(
         `/user/addremovefriends/${id}`,
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
       if (data.status) {
         console.log('----------------------------');
@@ -52,7 +52,7 @@ function Userdetails() {
         });
         if (data.status) {
           console.log(data.userdetails);
-          
+
           dispatch(Useraction.Getuser(data.userdetails));
         } else {
           alert('user not verified');
@@ -74,50 +74,38 @@ function Userdetails() {
 
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       {User.length ? (
         <div className="flex  w-full items-center mb-4 ">
           <div className="w-full rounded-xl p-12 shadow-2xl shadow-blue-200  bg-white">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
               <div className="grid-cols-1 lg:col-span-3">
-                <Avatar pc={true} img = {User[0].propicpath} />
+                <Avatar pc={true} img={User[0].propicpath} />
               </div>
 
               <div className="col-span-1 lg:col-span-9">
                 <div className="text-center lg:text-left m-1">
-                  <h2 className="text-2xl font-bold text-zinc-700">
-                    {User[0].name}
-                  </h2>
+                  <h2 className="text-2xl font-bold text-zinc-700">{User[0].name}</h2>
                 </div>
 
                 <div className="mt-6 grid grid-cols-3 gap-6 text-center lg:text-left m-1">
-                  <div style={{display:'none'}}>
+                  <div style={{ display: 'none' }}>
                     <p className="font-bold text-zinc-700"></p>
                     <p className="text-sm font-semibold text-zinc-700">Posts</p>
-                  </div> 
+                  </div>
 
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => showfollowers('Followers')}
-                  >
+                  <div className="cursor-pointer" onClick={() => showfollowers('Followers')}>
                     <p className="font-bold text-zinc-700">
                       {Object.keys(User[0].followers).length}
                     </p>
-                    <p className="text-sm font-semibold text-zinc-700">
-                      Followers
-                    </p>
+                    <p className="text-sm font-semibold text-zinc-700">Followers</p>
                   </div>
 
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => showfollowing('Following')}
-                  >
+                  <div className="cursor-pointer" onClick={() => showfollowing('Following')}>
                     <p className="font-bold text-zinc-700">
                       {Object.keys(User[0].following).length}
                     </p>
-                    <p className="text-sm font-semibold text-zinc-700">
-                      Following
-                    </p>
+                    <p className="text-sm font-semibold text-zinc-700">Following</p>
                   </div>
                 </div>
 
@@ -146,11 +134,7 @@ function Userdetails() {
       ) : (
         <h1>Loading....</h1>
       )}
-      {showfmodal ? (
-        <Friendlist show={showfmodal} close={setfmodal} userid={User[0]._id} />
-      ) : (
-        ''
-      )}
+      {showfmodal ? <Friendlist show={showfmodal} close={setfmodal} userid={User[0]._id} /> : ''}
     </div>
   );
 }

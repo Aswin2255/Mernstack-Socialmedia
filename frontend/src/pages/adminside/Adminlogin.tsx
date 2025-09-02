@@ -51,42 +51,38 @@ function Adminlogin() {
 
   // handelsubmit is used to submit the form to backend
   const handelsubmit = async () => {
-   try {
-    console.log(formstate);
-    let emailValid = formstate.email.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-    );
-    console.log(emailValid);
-    dispatch({
-      type: 'handelinput',
-      field: 'emailer',
-      payload: !emailValid,
-    });
-    let passvalid = formstate.pass.length >= 4;
-    dispatch({
-      type: 'handelinput',
-      field: 'passer',
-      payload: !passvalid,
-    });
-    if (emailValid && passvalid) {
-      const { data } = await axios.post('/admin/adminlogin', formstate, {
-        withCredentials: true,
+    try {
+      console.log(formstate);
+      let emailValid = formstate.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+      console.log(emailValid);
+      dispatch({
+        type: 'handelinput',
+        field: 'emailer',
+        payload: !emailValid,
       });
-      console.log(data);
-      if (data.status) {
-        // Userlogin is set to true
-        Dispatch(AuthActions.Adminlogin());
+      let passvalid = formstate.pass.length >= 4;
+      dispatch({
+        type: 'handelinput',
+        field: 'passer',
+        payload: !passvalid,
+      });
+      if (emailValid && passvalid) {
+        const { data } = await axios.post('/admin/adminlogin', formstate, {
+          withCredentials: true,
+        });
+        console.log(data);
+        if (data.status) {
+          // Userlogin is set to true
+          Dispatch(AuthActions.Adminlogin());
 
-        Navigate('/admin');
-      } else {
-        generateerror(data.msg);
+          Navigate('/admin');
+        } else {
+          generateerror(data.msg);
+        }
       }
+    } catch ({ response }) {
+      generateerror(response.data.msg);
     }
-    
-   } catch ({response}) {
-    generateerror(response.data.msg)
-    
-   }
   };
 
   // calling the usereducer hook return value from the usereducer hook is assigned to formstate and dispatch
@@ -106,7 +102,7 @@ function Adminlogin() {
             <span className="logoname"> Admipanel</span>
           </div>
 
-          <p class="m-4">Please login to your Adminpanel</p>
+          <p className="m-4">Please login to your Adminpanel</p>
           <Cards>
             <div>
               <input
@@ -117,11 +113,7 @@ function Adminlogin() {
                 onChange={(e) => handelchange(e)}
                 type="text"
               ></input>
-              {formstate.emailer ? (
-                <label className="text-red-700">Invalid email</label>
-              ) : (
-                ''
-              )}
+              {formstate.emailer ? <label className="text-red-700">Invalid email</label> : ''}
             </div>
             <div>
               <input
@@ -132,11 +124,7 @@ function Adminlogin() {
                 name="pass"
                 type="password"
               ></input>
-              {formstate.passer ? (
-                <label className="text-red-700">password is to short</label>
-              ) : (
-                ''
-              )}
+              {formstate.passer ? <label className="text-red-700">password is to short</label> : ''}
             </div>
             <div>
               <button

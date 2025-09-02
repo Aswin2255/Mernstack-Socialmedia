@@ -36,10 +36,7 @@ function Friendlist({ show, close, userid }) {
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-              <p className="flex">
-            
-                {show}
-              </p>
+              <p className="flex">{show}</p>
               <button
                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => close(false)}
@@ -52,11 +49,7 @@ function Friendlist({ show, close, userid }) {
                   stroke="currentColor"
                   className="w-6 h-6"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
@@ -70,13 +63,7 @@ function Friendlist({ show, close, userid }) {
                   ariaLabel="blocks-loading"
                   wrapperStyle={{}}
                   wrapperClass="blocks-wrapper"
-                  colors={[
-                    '#e15b64',
-                    '#f47e60',
-                    '#f8b26a',
-                    '#abbd81',
-                    '#849b87',
-                  ]}
+                  colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
                 />
               </>
             ) : (
@@ -88,16 +75,16 @@ function Friendlist({ show, close, userid }) {
                         <>
                           <div className="m-3">
                             <Avatar img={e.propicpath} />
-                            </div>
-                            <div className='m-3'>
-                            <Link onClick={()=>close(false)}
+                          </div>
+                          <div className="m-3">
+                            <Link
+                              onClick={() => close(false)}
                               to={`/profile/${e._id}`}
                               className="font-semibold cursor-pointer hover:underline"
                             >
                               {e.name}
                             </Link>
-                            </div>
-                          
+                          </div>
                         </>
                       </div>
                     );

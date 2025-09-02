@@ -16,8 +16,7 @@ function Adminsidebar({ children }) {
     navigate('/admin/adminlogin');
   };
   const location = useLocation();
-  let activeclase =
-    'flex gap-3 py-3 bg-black text-white   rounded-md shadow-md shadow-gray-300';
+  let activeclase = 'flex gap-3 py-3 bg-black text-white   rounded-md shadow-md shadow-gray-300';
   let nonactiveclase =
     'flex gap-2 py-3 hover:bg-blue-400 hover:bg-opacity-20  rounded-md  transition-all hover:scale-110';
   return (
@@ -27,11 +26,7 @@ function Adminsidebar({ children }) {
           <div>
             <Link
               to={'/admin/dashboard'}
-              className={
-                location.pathname === '/admin/dashboard'
-                  ? activeclase
-                  : nonactiveclase
-              }
+              className={location.pathname === '/admin/dashboard' ? activeclase : nonactiveclase}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -52,11 +47,7 @@ function Adminsidebar({ children }) {
 
             <Link
               to={'/postmanagement'}
-              className={
-                location.pathname === '/postmanagement'
-                  ? activeclase
-                  : nonactiveclase
-              }
+              className={location.pathname === '/postmanagement' ? activeclase : nonactiveclase}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,11 +67,7 @@ function Adminsidebar({ children }) {
             </Link>
             <Link
               to={'/usermanagement'}
-              className={
-                location.pathname === '/usermanagement'
-                  ? activeclase
-                  : nonactiveclase
-              }
+              className={location.pathname === '/usermanagement' ? activeclase : nonactiveclase}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

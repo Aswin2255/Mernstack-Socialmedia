@@ -48,11 +48,7 @@ function Topbar() {
       setsearchvalues(e.target.value);
       if (e.target.value !== '') {
         const result = fetcheduser
-          .filter(
-            (event) =>
-              event.name.includes(e.target.value) &&
-              event._id !== logedinuser._id
-          )
+          .filter((event) => event.name.includes(e.target.value) && event._id !== logedinuser._id)
           .slice(0, 5);
 
         setsearchresult(result);
@@ -107,7 +103,9 @@ function Topbar() {
                 />
               </div>
               <div
-                className={searchresult.length ? "results fixed overflow-y-scroll bg-white " : 'results'}
+                className={
+                  searchresult.length ? 'results fixed overflow-y-scroll bg-white ' : 'results'
+                }
                 style={{ width: '34%', marginLeft: '-2rem' }}
               >
                 {searchresult ? (
@@ -145,11 +143,7 @@ function Topbar() {
                 </p>
               </Link>
             </div>
-            <a
-              href="#/"
-              onClick={() => settoggle(!toggle)}
-              className="toggle-button"
-            >
+            <a href="#/" onClick={() => settoggle(!toggle)} className="toggle-button">
               <span className="bar"></span>
               <span className="bar"></span>
               <span className="bar"></span>
@@ -204,11 +198,7 @@ function Topbar() {
                 </div>
               </div>
                   */}
-              <div
-                className="logout"
-                onClick={logout}
-                style={{ display: 'flex', margin: '1rem' }}
-              >
+              <div className="logout" onClick={logout} style={{ display: 'flex', margin: '1rem' }}>
                 <div>
                   <p className="flex gap-2 py-3  hover:bg-blue-400 hover:bg-opacity-20  rounded-md  transition-all hover:scale-110 cursor-pointer">
                     <svg

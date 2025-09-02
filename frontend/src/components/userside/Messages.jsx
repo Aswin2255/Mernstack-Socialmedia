@@ -3,7 +3,7 @@ import axios from '../../Axios';
 import Avatar from './Avatar';
 
 function Messages({ message, own }) {
-  const [user,setuser] = useState([])
+  const [user, setuser] = useState([]);
   useEffect(() => {
     const senderid = message.senderid;
     const getuser = async () => {
@@ -16,8 +16,7 @@ function Messages({ message, own }) {
     };
     getuser();
   }, [message]);
-  
-  
+
   return (
     <>
       {own ? (
@@ -37,13 +36,12 @@ function Messages({ message, own }) {
       ) : (
         <div className="col-start-1 col-end-8 p-3 rounded-lg">
           <div className="flex flex-row items-center">
-          <div class="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0">
-                <Avatar img={user[0]?.propicpath} />
-              </div>
+            <div class="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0">
+              <Avatar img={user[0]?.propicpath} />
+            </div>
             <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
               <div>{message.text}</div>
             </div>
-           
           </div>
         </div>
       )}

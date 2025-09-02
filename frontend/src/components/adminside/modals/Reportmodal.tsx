@@ -18,7 +18,6 @@ function Reportmodal({ show, postdetails }) {
               </div>
               {/*body*/}
               <div className="p-2">
-               
                 {
                   <textarea
                     className="grow p-3 h-14 w-full"
@@ -30,10 +29,7 @@ function Reportmodal({ show, postdetails }) {
               {postdetails.picturepath ? (
                 <>
                   <div className="rounded-md overflow-hidden h-48 flex items-center shadow-md">
-                    <img
-                      src={`/assets/${postdetails.picturepath}`}
-                      alt="postimg"
-                    ></img>
+                    <img src={`/assets/${postdetails.picturepath}`} alt="postimg"></img>
                   </div>
                 </>
               ) : (

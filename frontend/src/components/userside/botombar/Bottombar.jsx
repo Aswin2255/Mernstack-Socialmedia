@@ -10,9 +10,7 @@ function Bottombar() {
   return (
     <div className="bottom-container">
       <div className="home">
-        <div
-          className={location.pathname === '/' ? activeclase : nonactiveclase}
-        >
+        <div className={location.pathname === '/' ? activeclase : nonactiveclase}>
           <Link to={'/'}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -32,12 +30,7 @@ function Bottombar() {
         </div>
       </div>
       <div className="chat">
-        <Link
-          to={'/chat'}
-          className={
-            location.pathname === '/chat' ? activeclase : nonactiveclase
-          }
-        >
+        <Link to={'/chat'} className={location.pathname === '/chat' ? activeclase : nonactiveclase}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -57,9 +50,7 @@ function Bottombar() {
       <div className="savedpost">
         <Link
           to={'/saved'}
-          className={
-            location.pathname === '/saved' ? activeclase : nonactiveclase
-          }
+          className={location.pathname === '/saved' ? activeclase : nonactiveclase}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,11 +71,7 @@ function Bottombar() {
       <div className="settings">
         <Link
           to={`/profile/${logedinuser}`}
-          className={
-            location.pathname === `/profile/${logedinuser}`
-              ? activeclase
-              : nonactiveclase
-          }
+          className={location.pathname === `/profile/${logedinuser}` ? activeclase : nonactiveclase}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

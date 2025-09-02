@@ -15,7 +15,7 @@ import { AuthActions } from '../../store/Authslice';
 function Setings() {
   const dispatch = useDispatch();
   const userdetails = useSelector((state) => state.auth.userdetails);
-  const [modal,setmodal] = useState(false)
+  const [modal, setmodal] = useState(false);
   const initialformstate = {
     username: userdetails.name,
     email: userdetails.email,
@@ -47,9 +47,7 @@ function Setings() {
       console.log(!uservalid);
       console.log(formstate);
       let phonevalid = formstate.phone.match(/^[789]\d{9}$/);
-      let emailvalid = formstate.email.match(
-        /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-      );
+      let emailvalid = formstate.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
       dis({
         type: 'form',
         field: 'emailer',
@@ -68,11 +66,9 @@ function Setings() {
       console.log(!uservalid);
       console.log(formstate);
       if (uservalid && phonevalid && emailvalid) {
-        const { data } = await axios.patch(
-          `/user/updateuser/${userdetails._id}`,
-          formstate,
-          { withCredentials: true }
-        );
+        const { data } = await axios.patch(`/user/updateuser/${userdetails._id}`, formstate, {
+          withCredentials: true,
+        });
         if (data.status) {
           generatesucess('user details updated');
           dispatch(AuthActions.Userupdate(data.updateduser));
@@ -103,19 +99,24 @@ function Setings() {
   return (
     <div>
       <ToastContainer />
-      {
-        modal ? <Propicmodal modal = {setmodal} /> : ''
-      }
+      {modal ? <Propicmodal modal={setmodal} /> : ''}
       <Topbar />
       <Layout>
         <div className="h-screen flex md:items-center mt-4">
           <div className="max-w-md mx-auto grow md:-mt-24">
             <Cards>
               <div className="flex gap-4 items-center justify-start  m-4  ">
-                <Avatar img = {userdetails.propicpath} />
-               <div className='float-right'>
-                <p onClick={()=>{setmodal(true)}}  className="hover:underline text-socialblue cursor-pointer">Change profile picture</p>
-               </div>
+                <Avatar img={userdetails.propicpath} />
+                <div className="float-right">
+                  <p
+                    onClick={() => {
+                      setmodal(true);
+                    }}
+                    className="hover:underline text-socialblue cursor-pointer"
+                  >
+                    Change profile picture
+                  </p>
+                </div>
               </div>
               <form onSubmit={(e) => handelupdate(e)}>
                 <div className="mb-4">
@@ -123,18 +124,12 @@ function Setings() {
                     type="text"
                     name="username"
                     value={formstate.username}
-                    onChange={(e) =>
-                      handelchange(e.target.name, e.target.value)
-                    }
+                    onChange={(e) => handelchange(e.target.name, e.target.value)}
                     className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="exampleFormControlInput1"
                     placeholder="Username"
                   />
-                  {formstate.nameer ? (
-                    <label className="text-red-500">invalid username</label>
-                  ) : (
-                    ''
-                  )}
+                  {formstate.nameer ? <label className="text-red-500">invalid username</label> : ''}
                 </div>
                 <div className="mb-4">
                   <input
@@ -144,15 +139,9 @@ function Setings() {
                     placeholder="Email"
                     name="email"
                     value={formstate.email}
-                    onChange={(e) =>
-                      handelchange(e.target.name, e.target.value)
-                    }
+                    onChange={(e) => handelchange(e.target.name, e.target.value)}
                   />
-                  {formstate.emailer ? (
-                    <label className="text-red-500">invalid email</label>
-                  ) : (
-                    ''
-                  )}
+                  {formstate.emailer ? <label className="text-red-500">invalid email</label> : ''}
                 </div>
                 <div className="mb-4">
                   <input
@@ -162,15 +151,9 @@ function Setings() {
                     placeholder="Phone number"
                     name="phone"
                     value={formstate.phone}
-                    onChange={(e) =>
-                      handelchange(e.target.name, e.target.value)
-                    }
+                    onChange={(e) => handelchange(e.target.name, e.target.value)}
                   />
-                  {formstate.phoneer ? (
-                    <label className="text-red-500">invalid phone</label>
-                  ) : (
-                    ''
-                  )}
+                  {formstate.phoneer ? <label className="text-red-500">invalid phone</label> : ''}
                 </div>
 
                 <button
@@ -180,14 +163,14 @@ function Setings() {
                   Update
                 </button>
               </form>
-             {/* <div className="grow text-right">
+              {/* <div className="grow text-right">
                 <Link
                   to={'/changepass'}
                   className="font-semibold underline text-socialblue"
                 >
                   Change password
                 </Link>
-                  </div>*/ }
+                  </div>*/}
             </Cards>
           </div>
         </div>

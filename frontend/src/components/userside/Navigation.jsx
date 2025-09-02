@@ -27,10 +27,7 @@ function Navigation() {
     <div className={ismobile ? 'hidden' : '  px-4 py-2  sticky top-20  '}>
       <Cards>
         <h2 className="text-gray-400 mb-3">Navigation</h2>
-        <Link
-          to={'/'}
-          className={location.pathname === '/' ? activeclase : nonactiveclase}
-        >
+        <Link to={'/'} className={location.pathname === '/' ? activeclase : nonactiveclase}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -48,12 +45,7 @@ function Navigation() {
           Home
         </Link>
 
-        <Link
-          to={'/chat'}
-          className={
-            location.pathname === '/chat' ? activeclase : nonactiveclase
-          }
-        >
+        <Link to={'/chat'} className={location.pathname === '/chat' ? activeclase : nonactiveclase}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -72,9 +64,7 @@ function Navigation() {
         </Link>
         <Link
           to={'/saved'}
-          className={
-            location.pathname === '/saved' ? activeclase : nonactiveclase
-          }
+          className={location.pathname === '/saved' ? activeclase : nonactiveclase}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -92,14 +82,10 @@ function Navigation() {
           </svg>
           Saved posts
         </Link>
-        
-          <Link
-          to={"/notifications"}
-          className={
-            location.pathname === "/notifications"
-              ? activeclase
-              : nonactiveclase
-          }
+
+        <Link
+          to={'/notifications'}
+          className={location.pathname === '/notifications' ? activeclase : nonactiveclase}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -117,13 +103,11 @@ function Navigation() {
           </svg>
           Alert
         </Link>
-        
+
         <Link
           to={`/setings/${logedinuser._id}`}
           className={
-            location.pathname === `/setings/${logedinuser._id}`
-              ? activeclase
-              : nonactiveclase
+            location.pathname === `/setings/${logedinuser._id}` ? activeclase : nonactiveclase
           }
         >
           <svg
